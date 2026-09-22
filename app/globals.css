@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-void: #08080C;
+    --color-concrete: #1A1A1A;
+    --color-silver-chrome: #C0C0C0;
+    --color-fog: #6B6B75;
+    --color-ash: #F0F0F0;
+    --color-glitch-white: #FFFFFF;
+    --color-rust: #3A2E2E;
+  }
+
+  body {
+    background-color: var(--color-void);
+    color: var(--color-ash);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: #C0C0C0;
+    color: #08080C;
+  }
+
+  /* Custom gothic scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #08080C;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #252528;
+    border-radius: 0px;
+    border: 1px solid #1A1A1A;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #C0C0C0;
+  }
+}
+
+/* Utilities for Gothic Tech aesthetics */
+.text-shadow-chrome {
+  text-shadow: 0 0 12px rgba(192, 192, 192, 0.4);
+}
+
+.text-shadow-glitch {
+  text-shadow: -2px 0 0 rgba(255, 255, 255, 0.8), 2px 0 0 rgba(100, 100, 100, 0.8);
+}
