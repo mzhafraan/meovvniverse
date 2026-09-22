@@ -21,11 +21,20 @@ const config: Config = {
         glitch: "#FFFFFF",
         rust: "#3A2E2E",
         blood: "#4A121A",
+        volt: "#CCFF00",
+        "volt-dim": "#A3CC00",
+        "volt-dark": "#1C2405",
+        "cyan-baffait": "#5FF2DE",
       },
       fontFamily: {
-        gothic: ["'Cormorant Garamond'", "Georgia", "serif"],
-        mono: ["'JetBrains Mono'", "Courier New", "monospace"],
-        sans: ["'Inter'", "system-ui", "-apple-system", "sans-serif"],
+        romellis: ['"Romellis Light Semi Condensed Italic"', '"Romellis"', '"Cormorant Garamond"', '"Playfair Display"', 'Georgia', 'serif'],
+        glyphius: ['"BT Glyphius Regular"', '"BT Glyphius Regular Placeholder"', 'sans-serif'],
+        bathory: ["'Bathory'", "'UnifrakturMaguntia'", "'Pirata One'", "'Cormorant Garamond'", "Georgia", "serif"],
+        pixel: ["var(--font-geist-pixel-square)", "'Pixelify Sans'", "'Silkscreen'", "'VT323'", "monospace"],
+        editorial: ['"BT Glyphius Regular"', '"BT Glyphius Regular Placeholder"', 'sans-serif'],
+        gothic: ['"BT Glyphius Regular"', '"BT Glyphius Regular Placeholder"', 'sans-serif'],
+        mono: ['"BT Glyphius Regular"', '"BT Glyphius Regular Placeholder"', "'JetBrains Mono'", 'Courier New', 'monospace'],
+        sans: ['"BT Glyphius Regular"', '"BT Glyphius Regular Placeholder"', '"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
       },
       keyframes: {
         glitch: {

@@ -23,7 +23,7 @@ export function MemberPillar({ member, index }: MemberPillarProps) {
     >
       {/* Top Roman Numeral Header */}
       <div className="relative z-20 flex items-center justify-between px-3 py-2 bg-void/80 border-b border-concrete-light/60 font-mono text-[10px] text-chrome-dim tracking-widest uppercase">
-        <span>0{index + 1} // CODEX</span>
+        <span>NO. 0{index + 1}</span>
         <span className="text-chrome font-bold">{member.name}</span>
       </div>
 

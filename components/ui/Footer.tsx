@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { GothicFrame, GothicDivider } from "./GothicFrame";
 import { TerminalText } from "./TerminalText";
+import { MeovvLogo } from "./MeovvLogo";
 
 export function Footer() {
   return (
@@ -16,29 +17,17 @@ export function Footer() {
           {/* Col 1: Brand & Manifesto */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <span className="font-gothic text-2xl font-black text-white tracking-[0.25em]">
-                MEOVVNIVERSE
-              </span>
-              <span className="px-2 py-0.5 border border-chrome/40 text-[9px] text-chrome tracking-widest">
-                VER 1.0.0
-              </span>
+              <MeovvLogo color="#FFFFFF" className="h-6 sm:h-7" />
             </div>
             <p className="text-sm font-sans text-fog max-w-md leading-relaxed">
-              A high-end Gothic Tech fan-hub and interactive digital archive dedicated to MEOVV (My Eyes Open VVide) under THEBLACKLABEL. Blending architectural dark fantasy and raw mechanical elegance.
+              An interactive digital archive dedicated to MEOVV (My Eyes Open VVide) under THEBLACKLABEL.
             </p>
-            <div className="pt-2">
-              <TerminalText
-                text="CODEX: SOOIN // GAWON // ANNA // NARIN // ELLA"
-                speed={40}
-                className="text-xs text-chrome-dim"
-              />
-            </div>
           </div>
 
           {/* Col 2: Navigation Links */}
           <div className="space-y-3">
             <h4 className="text-xs font-mono tracking-[0.25em] text-ash uppercase border-b border-concrete-light pb-2">
-              SECTORS
+              NAVIGATION
             </h4>
             <ul className="space-y-2 text-xs">
               <li>

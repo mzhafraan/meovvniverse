@@ -2,25 +2,37 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { TopographicLines } from "@/components/ui/TopographicLines";
 import { AsciiDitherBackground } from "@/components/ui/AsciiDitherBackground";
-import { TerminalText } from "@/components/ui/TerminalText";
-import { ArrowUpRight, ChevronDown, Play, Pause, RefreshCw, Disc3, Shield } from "lucide-react";
+import { MemberSignature } from "@/components/ui/MemberSignatures";
+import { MeovvLogo } from "@/components/ui/MeovvLogo";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MEMBERS } from "@/lib/data/meovvData";
 import { Member } from "@/types";
 
-// Urutan foto sesuai folder D:\ZHAFRAN\FOTO_MEOVV:
-// 1. ANNA.jpg
-// 2. ELLA.jpg
-// 3. GAWON.jpg
-// 4. NARIN.jpg
-// 5. SOOIN.jpg
-const FOLDER_ORDER_SLUGS = ["anna", "ella", "gawon", "narin", "sooin"];
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
+
+// Order requested by user:
+// Anna Tanaka, Ella Gross, Lee Gawon, Sooin Kim, Lyn Narin
+const FOLDER_ORDER_SLUGS = ["anna", "ella", "gawon", "sooin", "narin"];
+
+const MEMBER_FLANKING_NAMES: Record<
+  string,
+  { first: string; last: string; fullName: string }
+> = {
+  anna: { first: "Anna", last: "Tanaka", fullName: "Anna Tanaka" },
+  ella: { first: "Ella", last: "Gross", fullName: "Ella Gross" },
+  gawon: { first: "Lee", last: "Gawon", fullName: "Lee Gawon" },
+  sooin: { first: "Sooin", last: "Kim", fullName: "Sooin Kim" },
+  narin: { first: "Lyn", last: "Narin", fullName: "Lyn Narin" },
+};
 
 export function HeroSection() {
-  // Sort members according to the exact folder order
   const orderedMembers: Member[] = FOLDER_ORDER_SLUGS.map(
     (slug) => MEMBERS.find((m) => m.slug === slug) || MEMBERS[0]
   );
@@ -29,15 +41,26 @@ export function HeroSection() {
   const [isGlitching, setIsGlitching] = useState(false);
   const [glitchPhase, setGlitchPhase] = useState<0 | 1 | 2>(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [progress, setProgress] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Mouse parallax
-  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
+  // Refs
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const cardContainerRef = useRef<HTMLDivElement | null>(null);
+  const parallaxPortraitRef = useRef<HTMLDivElement | null>(null);
+  const signatureRef = useRef<HTMLDivElement | null>(null);
+  const leftNameRef = useRef<HTMLDivElement | null>(null);
+  const rightNameRef = useRef<HTMLDivElement | null>(null);
+
+  const rafParallaxRef = useRef<number>(0);
 
   const activeMember = orderedMembers[currentIndex];
+  const flankingNames =
+    MEMBER_FLANKING_NAMES[activeMember.slug] || {
+      first: activeMember.name,
+      last: ".",
+      fullName: activeMember.name,
+    };
   const CYCLE_INTERVAL = 5000; // 5 seconds per member
-  const PROGRESS_TICK = 50;
 
   // Trigger smooth glitch switch to a specific index
   const switchToMember = useCallback(
@@ -50,14 +73,13 @@ export function HeroSection() {
       setTimeout(() => {
         setGlitchPhase(2);
         setCurrentIndex(targetIndex);
-        setProgress(0);
-      }, 200);
+      }, 180);
 
       // Phase 2: Settle down and finish glitch
       setTimeout(() => {
         setIsGlitching(false);
         setGlitchPhase(0);
-      }, 450);
+      }, 420);
     },
     [isGlitching]
   );
@@ -68,315 +90,329 @@ export function HeroSection() {
   }, [currentIndex, orderedMembers.length, switchToMember]);
 
   const prevMember = useCallback(() => {
-    const prevIdx = (currentIndex - 1 + orderedMembers.length) % orderedMembers.length;
+    const prevIdx =
+      (currentIndex - 1 + orderedMembers.length) % orderedMembers.length;
     switchToMember(prevIdx);
   }, [currentIndex, orderedMembers.length, switchToMember]);
 
-  // Auto-play timer with progress bar
+  // Clean 5-second interval timer for portal member auto-cycling
   useEffect(() => {
     if (!isAutoPlaying || isHovered) return;
 
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          nextMember();
-          return 0;
-        }
-        return prev + (PROGRESS_TICK / CYCLE_INTERVAL) * 100;
-      });
-    }, PROGRESS_TICK);
+    const timer = setTimeout(() => {
+      nextMember();
+    }, CYCLE_INTERVAL);
 
-    return () => clearInterval(timer);
-  }, [isAutoPlaying, isHovered, nextMember]);
+    return () => clearTimeout(timer);
+  }, [isAutoPlaying, isHovered, currentIndex, nextMember]);
 
-  // Parallax mouse move handler
+  // Parallax mouse move handler inside portrait card
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!parallaxPortraitRef.current) return;
     const { clientX, clientY, currentTarget } = e;
     const rect = currentTarget.getBoundingClientRect();
-    const x = (clientX - rect.left) / rect.width - 0.5;
-    const y = (clientY - rect.top) / rect.height - 0.5;
-    setMouseOffset({ x: x * 12, y: y * 8 });
+    const x = ((clientX - rect.left) / rect.width - 0.5) * 16;
+    const y = ((clientY - rect.top) / rect.height - 0.5) * 12;
+
+    cancelAnimationFrame(rafParallaxRef.current);
+    rafParallaxRef.current = requestAnimationFrame(() => {
+      if (parallaxPortraitRef.current) {
+        parallaxPortraitRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      }
+    });
   };
+
+  // Scroll entrance reveal for The Portal
+  useGSAP(
+    () => {
+      if (!sectionRef.current) return;
+
+      // Card elevation & scale entrance
+      gsap.from(cardContainerRef.current, {
+        scale: 0.92,
+        opacity: 0.5,
+        y: 30,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      // Left and Right giant names slide in
+      if (leftNameRef.current) {
+        gsap.from(leftNameRef.current, {
+          x: -60,
+          opacity: 0,
+          duration: 0.8,
+          ease: "back.out(1.2)",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            toggleActions: "play none none none",
+          },
+        });
+      }
+
+      if (rightNameRef.current) {
+        gsap.from(rightNameRef.current, {
+          x: 60,
+          opacity: 0,
+          duration: 0.8,
+          ease: "back.out(1.2)",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            toggleActions: "play none none none",
+          },
+        });
+      }
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section
       id="portal"
-      onMouseMove={handleMouseMove}
-      className="relative w-full min-h-screen flex flex-col justify-between overflow-hidden bg-void pt-20 select-none"
+      ref={sectionRef}
+      className="relative w-full min-h-screen bg-void text-ash overflow-hidden select-none flex flex-col justify-between py-6 sm:py-8"
     >
-      {/* 1. Background: Full-Bleed ASCII Dither Effect (jjanaj recipe) from GROUP_PHOTO_BURNINGUP_MEOVV */}
-      <AsciiDitherBackground
-        imageSrc="/members/GROUP_PHOTO_BURNINGUP_MEOVV.jpg"
-        className="z-0 opacity-85"
-        config={{
-          cellSize: 10,
-          density: 0,
-          coverage: 100,
-          brightness: 0,
-          contrast: 128,
-          saturation: 0,
-          grayscale: 100,
-          invert: false,
-          renderMode: "dither",
-          bgMode: "solid",
-          animSpeed: 100,
-          animStyle: "shimmer",
-          animIntensity: 60,
-          chromaticEnabled: true,
-          chromaticIntensity: 20,
-          halftoneEnabled: true,
-          halftoneIntensity: 20,
-          filmDustEnabled: true,
-          filmDustIntensity: 20,
-          tiltBlur: true,
-          tiltFocus: 35,
-          tiltPosition: 50,
-          tiltFeather: 15,
-          blurAmount: 30,
+      {/* Background Layer 1: Ascii Dither Texture */}
+      <div className="absolute inset-0 pointer-events-none opacity-20 z-0">
+        <AsciiDitherBackground
+          imageSrc={activeMember.heroImage}
+          config={{
+            density: 0.35,
+            brightness: 0.85,
+            contrast: 1.25,
+            saturation: 0,
+            animSpeed: 0.4,
+          }}
+        />
+      </div>
+
+      {/* Background Layer 2: Crimson Nebula Aura (Upper Right) */}
+      <div
+        className="absolute -top-32 -right-32 w-[650px] sm:w-[900px] h-[650px] sm:h-[900px] pointer-events-none rounded-full opacity-45 blur-[120px] z-[1]"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(200, 25, 40, 0.45) 0%, rgba(120, 10, 20, 0.25) 45%, transparent 75%)",
         }}
       />
-      {/* Subtle top/bottom atmospheric vignette preserving full width */}
-      <div className="absolute inset-0 bg-gradient-to-b from-void/60 via-transparent to-void pointer-events-none z-[1]" />
 
-      {/* 2. Top Center Floating Gothic Emblem (Like the helmet icon in Lando Norris reference) */}
-      <div className="relative z-20 w-full flex flex-col items-center pt-2 sm:pt-4">
-        {/* Gothic Insignia */}
-        <div className="group relative cursor-pointer flex flex-col items-center">
-          <div className="w-10 h-10 rounded-full border border-chrome/40 bg-concrete-dark/90 backdrop-blur-md flex items-center justify-center text-chrome shadow-[0_0_15px_rgba(192,192,192,0.2)] group-hover:border-chrome group-hover:shadow-[0_0_25px_rgba(192,192,192,0.5)] transition-all">
-            <span className="font-gothic text-base font-black tracking-tighter">MV</span>
+      {/* Background Layer 3: Topographic Contour Lines Overlay */}
+      <div className="absolute inset-0 pointer-events-none z-[2] opacity-15">
+        <TopographicLines />
+      </div>
+
+      {/* Background Layer 4: Atmospheric Vignette */}
+      <div className="absolute inset-0 bg-gradient-to-b from-void/75 via-transparent to-void pointer-events-none z-[3]" />
+
+      {/* 1. TOP HEADER ROW: Micro Caption & Monogram */}
+      <div className="relative z-30 w-full px-4 sm:px-8 md:px-12 pt-2 sm:pt-4 flex items-start justify-between">
+        <div className="space-y-1">
+          <p className="font-sans text-[11px] sm:text-xs text-fog/90 leading-relaxed font-light">
+            Quiet creation, bringing ideas to life.
+          </p>
+          <p className="font-sans text-[11px] sm:text-xs text-fog/90 leading-relaxed font-light">
+            Through motion, detail and softness.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <div className="px-3 py-1 rounded-full border border-chrome/40 bg-concrete-dark/90 backdrop-blur-md flex items-center gap-2 text-chrome shadow-[0_0_15px_rgba(192,192,192,0.2)]">
+            <MeovvLogo color="currentColor" className="scale-75 origin-center" />
+            <span className="font-mono text-[10px] tracking-[0.25em] text-ash uppercase font-semibold">
+              {activeMember.name}
+            </span>
           </div>
-          <div className="h-4 w-[1px] bg-gradient-to-b from-chrome/60 to-transparent my-1" />
-          <span className="font-mono text-[9px] tracking-[0.35em] text-fog/80 uppercase group-hover:text-chrome transition-colors">
-            {activeMember.name} // ARCHIVE 0{currentIndex + 1}
-          </span>
         </div>
       </div>
 
-      {/* 3. CENTER HERO: Close-Up Portrait (Grounded at Bottom like Lando Norris) */}
+      {/* 2. CENTER HERO: EXACT 4:5 FRAME & COLOSSAL GEIST PIXEL NAMES */}
       <div
-        className="relative z-10 flex-1 w-full flex items-end justify-center pointer-events-auto"
+        className="relative z-20 flex-1 w-full max-w-[100vw] flex items-center justify-center pointer-events-auto px-2 sm:px-4 md:px-6 overflow-hidden select-none my-auto py-2"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Main Portrait Container */}
-        <div
-          onClick={nextMember}
-          className="relative w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl h-[68vh] sm:h-[76vh] md:h-[82vh] flex items-end justify-center cursor-pointer"
-          title="Click to glitch-switch to next member"
-          style={{
-            transform: `translate3d(${mouseOffset.x}px, ${mouseOffset.y}px, 0)`,
-            transition: "transform 0.2s cubic-bezier(0.25, 1, 0.5, 1)",
-          }}
-        >
-          {/* Base Member Image */}
+        {/* Main Horizontal Flanking Row */}
+        <div className="relative w-full flex items-center justify-center">
+          {/* Left Flanking Name: First Name in Romellis Light Semi Condensed Italic (White) */}
           <div
-            className={`relative w-full h-full flex items-end justify-center overflow-hidden transition-all duration-300 ${
-              isGlitching ? "scale-[1.02] filter contrast-150 brightness-110" : "scale-100"
-            }`}
-            style={{
-              maskImage: "radial-gradient(ellipse 80% 88% at 50% 50%, black 50%, transparent 92%), linear-gradient(to bottom, black 70%, transparent 100%)",
-              WebkitMaskImage: "radial-gradient(ellipse 80% 88% at 50% 50%, black 50%, transparent 92%), linear-gradient(to bottom, black 70%, transparent 100%)",
-            }}
+            ref={leftNameRef}
+            className="flex-1 flex justify-end items-center pr-2 sm:pr-4 md:pr-6 lg:pr-8 pointer-events-none select-none z-10 will-change-transform overflow-visible"
           >
-            <Image
-              src={activeMember.heroImage}
-              alt={activeMember.name}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 50vw"
-              className="object-contain object-bottom filter grayscale contrast-115 brightness-95 transition-opacity duration-300"
-            />
-
-            {/* GLITCH OVERLAY 1: Horizontal Slice Displacement */}
-            {isGlitching && (
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 pointer-events-none mix-blend-difference filter contrast-200 invert opacity-90 animate-glitch"
-                style={{
-                  clipPath:
-                    glitchPhase === 1
-                      ? "polygon(0 20%, 100% 20%, 100% 38%, 0 38%)"
-                      : "polygon(0 55%, 100% 55%, 100% 75%, 0 75%)",
-                  transform: glitchPhase === 1 ? "translateX(-8px)" : "translateX(10px)",
-                }}
-              >
-                <Image
-                  src={activeMember.heroImage}
-                  alt={activeMember.name}
-                  fill
-                  className="object-contain object-bottom"
-                />
-              </div>
-            )}
-
-            {/* GLITCH OVERLAY 2: Static White Noise & Slice Inversion */}
-            {isGlitching && (
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 pointer-events-none mix-blend-screen filter contrast-200 brightness-150 opacity-80"
-                style={{
-                  clipPath:
-                    glitchPhase === 1
-                      ? "polygon(0 68%, 100% 68%, 100% 86%, 0 86%)"
-                      : "polygon(0 10%, 100% 10%, 100% 28%, 0 28%)",
-                  transform: glitchPhase === 1 ? "translateX(12px)" : "translateX(-6px)",
-                }}
-              >
-                <Image
-                  src={activeMember.heroImage}
-                  alt={activeMember.name}
-                  fill
-                  className="object-contain object-bottom"
-                />
-              </div>
-            )}
-
-            {/* Subtle Scanlines on Image */}
-            <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,18,22,0)_50%,rgba(0,0,0,0.35)_50%)] bg-[length:100%_4px] opacity-30" />
+            <span className="font-romellis italic font-light tracking-tight text-white text-[clamp(4.8rem,14.5vw,23rem)] leading-[0.85] text-right whitespace-nowrap transition-all duration-300 drop-shadow-[0_15px_45px_rgba(0,0,0,0.95)] drop-shadow-[0_0_35px_rgba(255,255,255,0.45)]">
+              {flankingNames.first}
+            </span>
           </div>
 
-          {/* Glitch Indicator Tag on Hover */}
-          <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-30 px-3 py-1 bg-void/90 border border-chrome/40 text-[10px] font-mono tracking-[0.25em] text-chrome backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity uppercase pointer-events-none flex items-center gap-2">
-            <RefreshCw className={`w-3 h-3 ${isGlitching ? "animate-spin" : ""}`} />
-            <span>CLICK // CYCLE ARCHIVE TAPE</span>
+          {/* Main Portrait Wrapper: Exact 4:5 Aspect Ratio Matching Photo (736x920) */}
+          <div
+            ref={cardContainerRef}
+            onClick={nextMember}
+            className="relative shrink-0 w-[300px] sm:w-[400px] md:w-[480px] lg:w-[550px] xl:w-[620px] 2xl:w-[680px] max-h-[72vh] sm:max-h-[76vh] md:max-h-[80vh] aspect-[4/5] flex items-center justify-center cursor-pointer will-change-transform z-20 group"
+            title="Click photo to switch to next member"
+          >
+            {/* Framed Card Shell - Exact same size as the photo */}
+            <div className="portrait-card-frame relative w-full h-full rounded-sm border border-concrete-light/70 group-hover:border-volt/80 transition-all duration-300 bg-void/90 shadow-[0_25px_65px_rgba(0,0,0,0.95)] flex items-center justify-center">
+              {/* Corner Brackets tightly hugging the 4 corners */}
+              <div className="card-corners absolute -inset-1.5 sm:-inset-2 pointer-events-none z-30 transition-opacity duration-300">
+                <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-volt" />
+                <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-volt" />
+                <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-volt" />
+                <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-volt" />
+              </div>
+
+              {/* Inner Photo Container with parallax */}
+              <div
+                ref={parallaxPortraitRef}
+                onMouseMove={handleMouseMove}
+                className="relative w-full h-full overflow-hidden rounded-sm"
+              >
+                <div
+                  className={`relative w-full h-full transition-all duration-300 ${
+                    isGlitching
+                      ? "scale-[1.03] filter contrast-150 brightness-110"
+                      : "scale-100"
+                  }`}
+                >
+                  <Image
+                    src={activeMember.heroImage}
+                    alt={activeMember.name}
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 40vw"
+                    className="object-cover object-top filter grayscale contrast-115 brightness-95 transition-all duration-300 group-hover:filter-none group-hover:contrast-105"
+                  />
+
+                  {/* GLITCH OVERLAY 1: Horizontal Slice Displacement */}
+                  {isGlitching && (
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 pointer-events-none mix-blend-difference filter contrast-200 invert opacity-90 animate-glitch"
+                      style={{
+                        clipPath:
+                          glitchPhase === 1
+                            ? "polygon(0 20%, 100% 20%, 100% 38%, 0 38%)"
+                            : "polygon(0 55%, 100% 55%, 100% 75%, 0 75%)",
+                        transform:
+                          glitchPhase === 1
+                            ? "translateX(-8px)"
+                            : "translateX(10px)",
+                      }}
+                    >
+                      <Image
+                        src={activeMember.heroImage}
+                        alt={activeMember.name}
+                        fill
+                        className="object-cover object-top"
+                      />
+                    </div>
+                  )}
+
+                  {/* GLITCH OVERLAY 2: White Noise Spike */}
+                  {isGlitching && (
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 pointer-events-none mix-blend-screen filter contrast-200 brightness-150 opacity-80"
+                      style={{
+                        clipPath:
+                          glitchPhase === 1
+                            ? "polygon(0 68%, 100% 68%, 100% 86%, 0 86%)"
+                            : "polygon(0 10%, 100% 10%, 100% 28%, 0 28%)",
+                        transform:
+                          glitchPhase === 1
+                            ? "translateX(12px)"
+                            : "translateX(-6px)",
+                      }}
+                    >
+                      <Image
+                        src={activeMember.heroImage}
+                        alt={activeMember.name}
+                        fill
+                        className="object-cover object-top"
+                      />
+                    </div>
+                  )}
+
+                  {/* Subtle Scanlines on Image */}
+                  <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,18,22,0)_50%,rgba(0,0,0,0.35)_50%)] bg-[length:100%_4px] opacity-20" />
+                </div>
+              </div>
+
+              {/* Neon Signature Overlay */}
+              <div
+                ref={signatureRef}
+                className="absolute inset-x-0 bottom-6 z-30 pointer-events-none opacity-85 select-none transition-opacity duration-300 flex justify-center"
+              >
+                <div className="w-[85%] h-auto drop-shadow-[0_0_20px_rgba(204,255,0,0.5)]">
+                  <MemberSignature slug={activeMember.slug} />
+                </div>
+              </div>
+
+              {/* Tap to switch hint */}
+              <div className="absolute bottom-3 inset-x-0 flex justify-center z-30 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <div className="px-3 py-0.5 rounded-full bg-void/90 border border-volt/60 text-[9px] font-mono text-volt tracking-widest uppercase backdrop-blur-md shadow-[0_0_15px_rgba(204,255,0,0.4)]">
+                  Tap to Switch
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Flanking Name: Last Name in Romellis Light Semi Condensed Italic (Volt Green) */}
+          <div
+            ref={rightNameRef}
+            className="flex-1 flex justify-start items-center pl-2 sm:pl-4 md:pl-6 lg:pl-8 pointer-events-none select-none z-10 will-change-transform overflow-visible"
+          >
+            <span className="font-romellis italic font-light tracking-tight text-volt text-[clamp(4.8rem,14.5vw,23rem)] leading-[0.85] text-left whitespace-nowrap transition-all duration-300 drop-shadow-[0_0_45px_rgba(204,255,0,0.65)] text-shadow-volt">
+              {flankingNames.last}
+            </span>
           </div>
         </div>
       </div>
 
-      {/* 4. BOTTOM BAR: Left Telemetry Card + Right Sequence Timeline (Inspired by Lando Norris UI) */}
-      <div className="relative z-30 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 flex flex-col md:flex-row items-end justify-between gap-6">
-        {/* Bottom Left Card (Like "NEXT RACE" card on Lando's site) */}
-        <div className="w-full sm:w-80 bg-concrete-dark/95 backdrop-blur-md border border-concrete-light p-4 relative shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
-          {/* Gothic Corner Ornaments */}
-          <div className="absolute -top-1 -left-1 w-2.5 h-2.5 border-t-2 border-l-2 border-chrome/80" />
-          <div className="absolute -top-1 -right-1 w-2.5 h-2.5 border-t-2 border-r-2 border-chrome/80" />
-          <div className="absolute -bottom-1 -left-1 w-2.5 h-2.5 border-b-2 border-l-2 border-chrome/80" />
-          <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 border-b-2 border-r-2 border-chrome/80" />
-
-          {/* Header */}
-          <div className="flex items-center justify-between border-b border-concrete-light/60 pb-2 mb-3">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-mono text-[10px] tracking-[0.25em] text-chrome uppercase">
-                ENTITY TELEMETRY
-              </span>
-            </div>
-            <span className="font-mono text-[9px] text-fog">
-              CODEX 0{currentIndex + 1}/05
-            </span>
-          </div>
-
-          {/* Member Name & Positions */}
-          <div className="space-y-1 mb-3">
-            <div className="flex items-baseline justify-between">
-              <h2 className="font-gothic text-2xl font-bold tracking-[0.15em] text-white uppercase">
-                {activeMember.name}
-              </h2>
-              <span className="font-sans text-xs text-fog">
-                {activeMember.koreanName.split(" ")[0]}
-              </span>
-            </div>
-            <p className="font-mono text-[10px] text-chrome-dim tracking-wider uppercase">
-              {activeMember.positions.join(" // ")}
-            </p>
-          </div>
-
-          {/* Mini Stats Grid */}
-          <div className="grid grid-cols-2 gap-2 text-[10px] font-mono border-t border-concrete-light/40 pt-2 mb-3">
-            <div className="flex justify-between text-fog">
-              <span>MBTI:</span>
-              <span className="text-white font-bold">{activeMember.mbti}</span>
-            </div>
-            <div className="flex justify-between text-fog">
-              <span>ZODIAC:</span>
-              <span className="text-white font-bold">{activeMember.zodiac}</span>
-            </div>
-            <div className="flex justify-between text-fog">
-              <span>HEIGHT:</span>
-              <span className="text-white font-bold">{activeMember.height}</span>
-            </div>
-            <div className="flex justify-between text-fog">
-              <span>CODEX:</span>
-              <span className="text-chrome font-bold">SECTOR 0{currentIndex + 1}</span>
-            </div>
-          </div>
-
-          {/* Link CTA to Member Details */}
-          <Link
-            href={`/member/${activeMember.slug}`}
-            className="flex items-center justify-between w-full py-1.5 px-2.5 bg-void border border-concrete-light hover:border-chrome text-[10px] font-mono tracking-widest text-chrome hover:text-white transition-all uppercase"
+      {/* 3. BOTTOM BAR: Member Selector Pills (Names Only, No Numbers) */}
+      <div className="relative z-30 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 flex flex-col items-center gap-3">
+        {/* Member Switcher Tabs: Names Only */}
+        <div className="flex items-center gap-1.5 sm:gap-2 bg-void/90 p-1 sm:p-1.5 rounded-full border border-concrete-light/80 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.85)]">
+          <button
+            type="button"
+            onClick={prevMember}
+            className="p-1.5 text-fog hover:text-white transition-colors cursor-pointer"
+            aria-label="Previous member"
           >
-            <span>ACCESS FULL DOSSIER</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
+            <ChevronLeft className="w-4 h-4" />
+          </button>
 
-        {/* Bottom Center: Scroll Hint */}
-        <div className="hidden lg:flex flex-col items-center gap-1 text-fog/70 hover:text-white transition-colors cursor-pointer pb-2">
-          <a href="#coven" className="flex flex-col items-center gap-1.5">
-            <span className="font-mono text-[9px] tracking-[0.35em] uppercase">
-              SCROLL TO PENETRATE ARCHIVE
-            </span>
-            <ChevronDown className="w-4 h-4 animate-bounce text-chrome" />
-          </a>
-        </div>
-
-        {/* Bottom Right Timeline & Member Sequence Selector */}
-        <div className="w-full sm:w-auto bg-concrete-dark/95 backdrop-blur-md border border-concrete-light p-3 sm:p-4 shadow-[0_10px_30px_rgba(0,0,0,0.9)] space-y-3">
-          {/* Header with Play/Pause Auto Cycle */}
-          <div className="flex items-center justify-between gap-4 text-[10px] font-mono text-fog border-b border-concrete-light/60 pb-2">
-            <span className="tracking-widest text-chrome uppercase">
-              FOLDER SEQUENCE (D:\ZHAFRAN\FOTO_MEOVV)
-            </span>
-            <button
-              onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-              className="flex items-center gap-1 text-chrome hover:text-white transition-colors"
-              title={isAutoPlaying ? "Pause Auto Glitch" : "Resume Auto Glitch"}
-            >
-              {isAutoPlaying ? (
-                <>
-                  <Pause className="w-3 h-3" />
-                  <span>PAUSE</span>
-                </>
-              ) : (
-                <>
-                  <Play className="w-3 h-3" />
-                  <span>AUTO</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          {/* Member Pills in Folder Order: ANNA, ELLA, GAWON, NARIN, SOOIN */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            {orderedMembers.map((member, idx) => (
+          {orderedMembers.map((member, idx) => {
+            const isActive = idx === currentIndex;
+            return (
               <button
-                key={member.id}
+                key={member.slug}
+                type="button"
                 onClick={() => switchToMember(idx)}
-                className={`relative px-2.5 py-1 text-[10px] font-mono tracking-widest uppercase transition-all duration-300 border ${
-                  currentIndex === idx
-                    ? "bg-ash text-void border-white font-bold shadow-[0_0_12px_rgba(255,255,255,0.4)]"
-                    : "bg-void text-fog border-concrete-light hover:border-chrome/50 hover:text-ash"
+                className={`px-3 sm:px-4 py-1.5 rounded-full font-pixel text-xs sm:text-sm tracking-wider uppercase transition-all cursor-pointer ${
+                  isActive
+                    ? "bg-volt text-void font-bold shadow-[0_0_15px_rgba(204,255,0,0.5)] scale-105"
+                    : "text-fog hover:text-ash hover:bg-concrete-light/50"
                 }`}
               >
                 <span>{member.name}</span>
               </button>
-            ))}
-          </div>
+            );
+          })}
 
-          {/* Auto Cycle Progress Bar */}
-          <div className="space-y-1">
-            <div className="h-1 w-full bg-void border border-concrete-light overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-chrome-dim to-white transition-all duration-75"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <div className="flex justify-between text-[8px] font-mono text-fog/60">
-              <span>GLITCH CYCLE</span>
-              <span>{Math.round(progress)}%</span>
-            </div>
-          </div>
+          <button
+            type="button"
+            onClick={nextMember}
+            className="p-1.5 text-fog hover:text-white transition-colors cursor-pointer"
+            aria-label="Next member"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </section>

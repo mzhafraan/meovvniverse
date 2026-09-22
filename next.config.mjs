@@ -27,6 +27,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "static.wikia.nocookie.net",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.21st.dev",
+      },
     ],
   },
 };

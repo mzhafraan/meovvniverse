@@ -120,6 +120,19 @@ export function useAudioPlayer(tracks: Track[], initialTrackIndex = 0) {
     }
   }, [tracks.length]);
 
+  const loadCustomAudio = useCallback((urlOrFile: string | File) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const src =
+      typeof urlOrFile === "string" ? urlOrFile : URL.createObjectURL(urlOrFile);
+    audio.src = src;
+    audio.load();
+    audio
+      .play()
+      .then(() => setIsPlaying(true))
+      .catch(() => {});
+  }, []);
+
   return {
     currentTrack,
     currentTrackIndex,
@@ -136,5 +149,6 @@ export function useAudioPlayer(tracks: Track[], initialTrackIndex = 0) {
     selectTrack,
     setVolume,
     setIsMuted,
+    loadCustomAudio,
   };
 }

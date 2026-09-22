@@ -1,12 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { FeedItem, LiveScheduleItem } from "@/types";
 import { GothicFrame, GothicDivider } from "@/components/ui/GothicFrame";
 import { TerminalText } from "@/components/ui/TerminalText";
 import { GlitchImage } from "@/components/ui/GlitchImage";
 import { Radio, Youtube, ExternalLink, Play, Clock, Sparkles } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 interface SocialTerminalProps {
   feedItems: FeedItem[];
@@ -16,6 +23,59 @@ interface SocialTerminalProps {
 export function SocialTerminal({ feedItems, liveSchedules }: SocialTerminalProps) {
   const [filter, setFilter] = useState<"all" | "youtube" | "churrrr" | "dispatch">("all");
   const [activeModalVideo, setActiveModalVideo] = useState<string | null>(null);
+  const containerRef = useRef<HTMLElement | null>(null);
+
+  useGSAP(
+    () => {
+      if (!containerRef.current) return;
+
+      // Section Transition Beam
+      gsap.fromTo(
+        ".terminal-section-beam",
+        { scaleX: 0, opacity: 0 },
+        {
+          scaleX: 1,
+          opacity: 1,
+          duration: 1.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 90%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Header entrance
+      gsap.from(".terminal-header-anim", {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      // Grid cards entrance
+      gsap.from(".terminal-card-anim", {
+        y: 60,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.08,
+        ease: "power4.out",
+        scrollTrigger: {
+          trigger: ".terminal-cards-grid",
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+      });
+    },
+    { scope: containerRef }
+  );
 
   const filteredItems = feedItems.filter((item) => {
     if (filter === "all") return true;
@@ -23,23 +83,24 @@ export function SocialTerminal({ feedItems, liveSchedules }: SocialTerminalProps
   });
 
   return (
-    <section id="terminal" className="relative w-full bg-void-light py-24 px-4 sm:px-6 lg:px-8 border-t border-concrete-light">
+    <section
+      ref={containerRef}
+      id="terminal"
+      className="relative w-full bg-void-light py-24 px-4 sm:px-6 lg:px-8 border-t border-concrete-light overflow-hidden"
+    >
+      {/* Cybernetic Section Transition Scanner Beam */}
+      <div className="terminal-section-beam absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-baffait to-transparent origin-center pointer-events-none z-10 shadow-[0_0_15px_rgba(95,242,222,0.8)]" />
+
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 border border-chrome/30 bg-concrete-dark text-[10px] font-mono tracking-[0.3em] text-chrome uppercase">
-            <span>SECTOR 03 // AGGREGATOR ENGINE</span>
-          </div>
-
-          <h2 className="font-gothic text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[0.2em] text-ash uppercase">
-            SOCIAL TERMINAL
+        <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
+          <h2 className="terminal-header-anim font-bathory text-5xl sm:text-6xl lg:text-7xl font-normal tracking-wide text-white">
+            Transmissions
           </h2>
 
-          <p className="font-sans text-xs sm:text-sm text-fog leading-relaxed">
-            Consolidated telemetry intercepted from YouTube transmissions, scheduled CHURRRR broadcasts, and gothic visual dispatches. Encased in distressed chrome filigree.
+          <p className="terminal-header-anim font-sans text-sm text-fog max-w-md mx-auto leading-relaxed">
+            Broadcast schedules, live stage cams, and official visual media.
           </p>
-
-          <GothicDivider label="TRANSMISSION GRID" />
         </div>
 
         {/* Live CHURRRR Broadcast Radar (Alert Banner) */}
@@ -47,8 +108,8 @@ export function SocialTerminal({ feedItems, liveSchedules }: SocialTerminalProps
           <div className="mb-12">
             <div className="flex items-center gap-2 mb-3">
               <Radio className="w-4 h-4 text-red-500 animate-pulse" />
-              <h3 className="font-mono text-xs tracking-[0.25em] text-ash uppercase">
-                SCHEDULED BROADCAST RADAR (CHURRRR // KST)
+              <h3 className="font-mono text-xs tracking-[0.2em] text-ash uppercase">
+                UPCOMING BROADCASTS
               </h3>
             </div>
 
@@ -125,13 +186,13 @@ export function SocialTerminal({ feedItems, liveSchedules }: SocialTerminalProps
         </div>
 
         {/* Masonry / Responsive Feed Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="terminal-cards-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredItems.map((item) => (
-            <GothicFrame
-              key={item.id}
-              highlight={item.highlight}
-              className="flex flex-col h-full overflow-hidden"
-            >
+            <div key={item.id} className="terminal-card-anim h-full">
+              <GothicFrame
+                highlight={item.highlight}
+                className="flex flex-col h-full overflow-hidden"
+              >
               {/* Media Thumbnail */}
               <div className="relative w-full h-48 bg-void overflow-hidden">
                 <GlitchImage
@@ -177,7 +238,7 @@ export function SocialTerminal({ feedItems, liveSchedules }: SocialTerminalProps
 
                 <div className="pt-2 border-t border-concrete-light/40 flex items-center justify-between">
                   <span className="text-[10px] font-mono text-chrome-dim tracking-wider uppercase">
-                    PROTOCOL: {item.type}
+                    {item.type}
                   </span>
                   <a
                     href={item.url}
@@ -185,12 +246,13 @@ export function SocialTerminal({ feedItems, liveSchedules }: SocialTerminalProps
                     rel="noopener noreferrer"
                     className="text-[11px] font-mono text-chrome hover:text-white flex items-center gap-1 font-bold group-hover:translate-x-0.5 transition-transform"
                   >
-                    <span>TRANSMIT</span>
+                    <span>VIEW</span>
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
               </div>
             </GothicFrame>
+            </div>
           ))}
         </div>
       </div>

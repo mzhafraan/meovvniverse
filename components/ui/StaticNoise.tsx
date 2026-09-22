@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export function StaticNoise({ opacity = 0.05 }: { opacity?: number }) {
+export function StaticNoise({ opacity = 0.04 }: { opacity?: number }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -11,44 +11,41 @@ export function StaticNoise({ opacity = 0.05 }: { opacity?: number }) {
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     if (!ctx) return;
 
-    let animationFrameId: number;
+    // Small tile dimensions for extreme performance (scaled up via CSS pixelated)
+    const w = 180;
+    const h = 120;
+    canvas.width = w;
+    canvas.height = h;
 
-    const resize = () => {
-      canvas.width = Math.min(window.innerWidth / 2, 480);
-      canvas.height = Math.min(window.innerHeight / 2, 360);
-    };
-
-    resize();
-    window.addEventListener("resize", resize);
-
-    const renderNoise = () => {
-      const w = canvas.width;
-      const h = canvas.height;
-      if (w === 0 || h === 0) return;
-
+    // Pre-generate 6 noise frames ONCE into memory
+    const frames: ImageData[] = [];
+    for (let f = 0; f < 6; f++) {
       const imgData = ctx.createImageData(w, h);
-      const buffer = new Uint32Array(imgData.data.buffer);
-      const len = buffer.length;
-
+      const buf = new Uint32Array(imgData.data.buffer);
+      const len = buf.length;
       for (let i = 0; i < len; i++) {
-        // High-contrast monochrome noise (black & white grain)
-        if (Math.random() < 0.12) {
-          const shade = Math.floor(Math.random() * 255);
-          buffer[i] = (255 << 24) | (shade << 16) | (shade << 8) | shade;
+        if (Math.random() < 0.1) {
+          const shade = Math.floor(Math.random() * 220 + 35);
+          buf[i] = (255 << 24) | (shade << 16) | (shade << 8) | shade;
         } else {
-          buffer[i] = 0;
+          buf[i] = 0;
         }
       }
+      frames.push(imgData);
+    }
 
-      ctx.putImageData(imgData, 0, 0);
-      animationFrameId = requestAnimationFrame(renderNoise);
-    };
+    let frameIndex = 0;
+    let intervalId: number;
 
-    renderNoise();
+    // Cycle through pre-generated noise frames at ~14 FPS (classic analog film noise rate)
+    // ZERO memory allocation per frame!
+    intervalId = window.setInterval(() => {
+      frameIndex = (frameIndex + 1) % frames.length;
+      ctx.putImageData(frames[frameIndex], 0, 0);
+    }, 70);
 
     return () => {
-      window.removeEventListener("resize", resize);
-      cancelAnimationFrame(animationFrameId);
+      clearInterval(intervalId);
     };
   }, []);
 

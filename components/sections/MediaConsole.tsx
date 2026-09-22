@@ -20,12 +20,20 @@ import {
   Terminal,
   Layers,
 } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 interface MediaConsoleProps {
   tracks: Track[];
 }
 
 export function MediaConsole({ tracks }: MediaConsoleProps) {
+  const containerRef = useRef<HTMLElement | null>(null);
   const {
     currentTrack,
     currentTrackIndex,
@@ -42,6 +50,7 @@ export function MediaConsole({ tracks }: MediaConsoleProps) {
     selectTrack,
     setVolume,
     setIsMuted,
+    loadCustomAudio,
   } = useAudioPlayer(tracks, 0);
 
   const { activeIndex, activeLine, previousLine, nextLine } = useLyricSync(
@@ -84,31 +93,81 @@ export function MediaConsole({ tracks }: MediaConsoleProps) {
 
   const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
 
+  useGSAP(
+    () => {
+      if (!containerRef.current) return;
+
+      // Cybernetic section transition beam
+      gsap.fromTo(
+        ".console-section-beam",
+        { scaleX: 0, opacity: 0 },
+        {
+          scaleX: 1,
+          opacity: 1,
+          duration: 1.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 90%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Header elements reveal
+      gsap.from(".console-header-anim", {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      // Console shell elevation
+      gsap.from(".console-shell-anim", {
+        y: 60,
+        opacity: 0,
+        scale: 0.97,
+        duration: 0.9,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".console-shell-anim",
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+      });
+    },
+    { scope: containerRef }
+  );
+
   return (
     <section
+      ref={containerRef}
       id="console"
-      className="relative w-full bg-void py-24 px-4 sm:px-6 lg:px-8 border-t border-concrete-light select-none"
+      className="relative w-full bg-void py-24 px-4 sm:px-6 lg:px-8 border-t border-concrete-light select-none overflow-hidden"
     >
+      {/* Cybernetic Section Transition Scanner Beam */}
+      <div className="console-section-beam absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-volt to-transparent origin-center pointer-events-none z-10 shadow-[0_0_15px_rgba(204,255,0,0.8)]" />
+
       <div className="max-w-6xl mx-auto">
         {/* Section Title */}
-        <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 border border-chrome/30 bg-concrete-dark text-[10px] font-mono tracking-[0.3em] text-chrome uppercase">
-            <span>SECTOR 04 // INDUSTRIAL SOUND ENGINE</span>
-          </div>
-
-          <h2 className="font-gothic text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[0.2em] text-ash uppercase">
-            ARCHAIC MEDIA CONSOLE
+        <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
+          <h2 className="console-header-anim font-bathory text-5xl sm:text-6xl lg:text-7xl font-normal tracking-wide text-white">
+            Audio Vault
           </h2>
 
-          <p className="font-sans text-xs sm:text-sm text-fog leading-relaxed">
-            Mechanical sound console built with etched steel plates, analog seek calipers, and synchronized kinetic lyric telemetry. Streamed through the Gothic Tech mainframe.
+          <p className="console-header-anim font-sans text-sm text-fog max-w-md mx-auto leading-relaxed">
+            Official discography with synchronized real-time lyrics.
           </p>
-
-          <GothicDivider label="ANALOG PLAYBACK CORE" />
         </div>
 
         {/* Industrial Mechanical Console Outer Shell */}
-        <div className="relative rounded-none bg-concrete-dark border-2 border-concrete-light shadow-[0_20px_50px_rgba(0,0,0,0.95)] p-4 sm:p-8">
+        <div className="console-shell-anim relative rounded-none bg-concrete-dark border-2 border-concrete-light shadow-[0_20px_50px_rgba(0,0,0,0.95)] p-4 sm:p-8">
           {/* Industrial Screws / Rivets in Corners */}
           <div className="absolute top-2 left-2 w-3 h-3 rounded-full border border-chrome/50 bg-concrete flex items-center justify-center">
             <div className="w-1.5 h-[1px] bg-chrome/70 rotate-45" />
@@ -123,18 +182,13 @@ export function MediaConsole({ tracks }: MediaConsoleProps) {
             <div className="w-1.5 h-[1px] bg-chrome/70 rotate-60" />
           </div>
 
-          {/* Top Industrial Header Bar */}
+          {/* Top Header Bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-6 border-b border-concrete-light">
             <div className="flex items-center gap-3">
-              <div className="w-3 h-3 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.8)]" />
-              <div className="flex flex-col">
-                <span className="font-mono text-xs font-bold tracking-[0.25em] text-ash uppercase">
-                  MEOVV // ARCHAIC-01 CONSOLE
-                </span>
-                <span className="font-mono text-[9px] text-fog tracking-widest">
-                  MECHANICAL FREQUENCY: 44.1 KHZ / 24-BIT
-                </span>
-              </div>
+              <div className="w-2.5 h-2.5 bg-volt rounded-full animate-pulse shadow-[0_0_10px_rgba(204,255,0,0.6)]" />
+              <span className="font-mono text-xs font-bold tracking-[0.2em] text-ash uppercase">
+                DISCOGRAPHY PLAYER
+              </span>
             </div>
 
             {/* Track Switcher Tabs */}
@@ -175,12 +229,12 @@ export function MediaConsole({ tracks }: MediaConsoleProps) {
                   <div className="absolute inset-16 rounded-full border border-white/5" />
 
                   {/* Center Album Art */}
-                  <div className="relative w-28 h-28 rounded-full overflow-hidden border-2 border-chrome/60">
+                  <div className="relative w-28 h-28 rounded-full overflow-hidden border-2 border-chrome/60 shadow-[0_0_15px_rgba(0,0,0,0.8)]">
                     <Image
                       src={currentTrack.coverArt}
                       alt={currentTrack.title}
                       fill
-                      className="object-cover filter grayscale contrast-125"
+                      className="object-cover contrast-105 brightness-100"
                     />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-5 h-5 rounded-full bg-void border border-chrome" />
@@ -320,23 +374,23 @@ export function MediaConsole({ tracks }: MediaConsoleProps) {
                   />
                 </div>
 
-                <div className="flex justify-between text-[9px] font-mono text-fog">
-                  <span>00:00 [LEAD-IN]</span>
-                  <span>CLICK TO RETARGET PLAYHEAD</span>
-                  <span>{formatTime(duration)} [LEAD-OUT]</span>
+                <div className="flex justify-between text-[10px] font-mono text-fog">
+                  <span>00:00</span>
+                  <span className="text-chrome font-bold">{formatTime(currentTime)}</span>
+                  <span>{formatTime(duration)}</span>
                 </div>
               </div>
 
-              {/* SYNCED LYRIC TERMINAL WINDOW (PRD 4.4.1) */}
+              {/* SYNCED LYRICS CONTAINER */}
               <div className="flex-1 flex flex-col bg-void border border-concrete-light shadow-inner overflow-hidden">
                 {/* Terminal Header */}
                 <div className="flex items-center justify-between px-4 py-2 bg-concrete-dark border-b border-concrete-light font-mono text-[10px] text-chrome tracking-widest uppercase">
                   <div className="flex items-center gap-2">
                     <Terminal className="w-3.5 h-3.5 text-chrome" />
-                    <span>TELEMETRY LYRIC STREAM :: {currentTrack.title}.LOG</span>
+                    <span>SYNCHRONIZED LYRICS · {currentTrack.title}</span>
                   </div>
                   <span className="flex items-center gap-1.5 text-fog">
-                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping" />
+                    <span className="w-1.5 h-1.5 bg-[#CCFF00] rounded-full" />
                     SYNCED
                   </span>
                 </div>
@@ -430,14 +484,32 @@ export function MediaConsole({ tracks }: MediaConsoleProps) {
             </div>
           </div>
 
-          {/* Bottom Console Screws / Rivets */}
-          <div className="mt-8 pt-4 border-t border-concrete-light flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] font-mono text-fog">
-            <div className="flex items-center gap-4">
+          {/* Bottom Console Controls & Local Audio Loader */}
+          <div className="mt-8 pt-4 border-t border-concrete-light flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] font-mono text-fog">
+            <div className="flex flex-wrap items-center gap-4">
               <span>CONTROLS: [SPACE] PLAY/PAUSE</span>
               <span>[M] MUTE</span>
+              <span className="hidden sm:inline text-concrete-light">|</span>
+              <label
+                title="Load local song file (e.g. from C:\Users\Chevalier Lab\Music\MEOVV\BITE NOW)"
+                className="cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-1 bg-void border border-concrete-light hover:border-volt hover:text-volt text-[10px] font-mono text-ash uppercase transition-all shadow-sm"
+              >
+                <Radio className="w-3 h-3 text-volt animate-pulse" />
+                <span>LOAD LOCAL AUDIO</span>
+                <input
+                  type="file"
+                  accept="audio/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) loadCustomAudio(file);
+                  }}
+                  className="hidden"
+                />
+              </label>
             </div>
             <div className="flex items-center gap-2 text-chrome">
-              <span>AUDIO SIGNAL: STEREO MONOCHROME HI-RES</span>
+              <span className="text-volt">● VAULT LINKED:</span>
+              <span className="text-fog">BITE NOW [C:\Users\Chevalier Lab\Music\MEOVV\BITE NOW]</span>
             </div>
           </div>
         </div>

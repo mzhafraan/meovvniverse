@@ -1,0 +1,1230 @@
+[
+  {
+    "id": "hit-em",
+    "title": "Hit 'Em",
+    "album": "BITE NOW - 2nd EP",
+    "releaseDate": "2026-06-01",
+    "duration": 170,
+    "audioUrl": "/music/bite-now/hit-em.mp3",
+    "fallbackAudioUrl": "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f792cb.mp3?filename=cyberpunk-2099-122971.mp3",
+    "coverArt": "/music/bite-now/hit-em.jpg",
+    "youtubeId": "MEOVV_OFFICIAL",
+    "lyrics": [
+      {
+        "time": 15.51,
+        "text": "I'll let you go first",
+        "speaker": "ELLA"
+      },
+      {
+        "time": 16.77,
+        "text": "I'll do worse"
+      },
+      {
+        "time": 17.75,
+        "text": "Hit 'em where it hit 'em where it hurts"
+      },
+      {
+        "time": 19.07,
+        "text": "Leave you in the dirt"
+      },
+      {
+        "time": 20.51,
+        "text": "Put in work"
+      },
+      {
+        "time": 21.5,
+        "text": "Hit 'em where it hit 'em where it hurts"
+      },
+      {
+        "time": 22.93,
+        "text": "Ahhhh"
+      },
+      {
+        "time": 25.8,
+        "text": "Hit 'em where it hurts",
+        "speaker": "SOOBIN"
+      },
+      {
+        "time": 26.73,
+        "text": "Ahhhh"
+      },
+      {
+        "time": 29.52,
+        "text": "Hit 'em where it hurts",
+        "speaker": "ANNA"
+      },
+      {
+        "time": 30.22,
+        "text": "You want act right?",
+        "speaker": "NARIN"
+      },
+      {
+        "time": 31.33,
+        "text": "We active"
+      },
+      {
+        "time": 32.19,
+        "text": "It's on sight today"
+      },
+      {
+        "time": 33.9,
+        "text": "This ain't no cat fight"
+      },
+      {
+        "time": 35.19,
+        "text": "We big dogs"
+      },
+      {
+        "time": 36,
+        "text": "Take big bites okay"
+      },
+      {
+        "time": 37.7,
+        "text": "What you gon' do?",
+        "speaker": "GAWON"
+      },
+      {
+        "time": 38.63,
+        "text": "Make your move"
+      },
+      {
+        "time": 39.58,
+        "text": "Me vs you"
+      },
+      {
+        "time": 40.53,
+        "text": "No round two"
+      },
+      {
+        "time": 41.47,
+        "text": "They waitin' on half time"
+      },
+      {
+        "time": 42.64,
+        "text": "It's over"
+      },
+      {
+        "time": 43.53,
+        "text": "Stay sidelines away (ay)"
+      },
+      {
+        "time": 45.92,
+        "text": "We ain't ever gonna stop (stop)",
+        "speaker": "SOOBIN"
+      },
+      {
+        "time": 47.87,
+        "text": "We ain't ever gonna back down"
+      },
+      {
+        "time": 49.86,
+        "text": "Gonna take it to the top (top)"
+      },
+      {
+        "time": 51.69,
+        "text": "Gonna leave you in the background"
+      },
+      {
+        "time": 53.68,
+        "text": "Give it all give it all we got",
+        "speaker": "ANNA"
+      },
+      {
+        "time": 55,
+        "text": "All eyes are on us now (right now)"
+      },
+      {
+        "time": 57.39,
+        "text": "Take your shot take your shot"
+      },
+      {
+        "time": 58.39,
+        "text": "We go in 5 4 3 2"
+      },
+      {
+        "time": 61.05,
+        "text": "I'll let you go first",
+        "speaker": "NARIN"
+      },
+      {
+        "time": 62.39,
+        "text": "I'll do worse"
+      },
+      {
+        "time": 63.41,
+        "text": "Hit 'em where it hit 'em where it hurts"
+      },
+      {
+        "time": 64.8,
+        "text": "Leave you in the dirt"
+      },
+      {
+        "time": 66.21,
+        "text": "Put in work"
+      },
+      {
+        "time": 67.13,
+        "text": "Hit 'em where it hit 'em where it hurts"
+      },
+      {
+        "time": 68.64,
+        "text": "Ahhhh"
+      },
+      {
+        "time": 71.38,
+        "text": "Hit 'em where it hurts",
+        "speaker": "ANNA"
+      },
+      {
+        "time": 72.44,
+        "text": "Ahhhh"
+      },
+      {
+        "time": 75.19,
+        "text": "Hit 'em where it hurts",
+        "speaker": "SOOBIN"
+      },
+      {
+        "time": 76.24,
+        "text": "I'll let you go first",
+        "speaker": "GAWON"
+      },
+      {
+        "time": 77.66,
+        "text": "I'll do worse"
+      },
+      {
+        "time": 78.6,
+        "text": "Hit 'em where it hit 'em where it hurts"
+      },
+      {
+        "time": 80.06,
+        "text": "Leave you in the dirt"
+      },
+      {
+        "time": 81.43,
+        "text": "Put in work"
+      },
+      {
+        "time": 82.36,
+        "text": "Hit 'em where it hit 'em where it hurts"
+      },
+      {
+        "time": 83.86,
+        "text": "Ahhhh"
+      },
+      {
+        "time": 86.63,
+        "text": "Hit 'em where it hurts",
+        "speaker": "SOOBIN"
+      },
+      {
+        "time": 87.67,
+        "text": "Ahhhh"
+      },
+      {
+        "time": 90.41,
+        "text": "Hit 'em where it hurts",
+        "speaker": "NARIN"
+      },
+      {
+        "time": 91.68,
+        "text": "I'm a lot to handle",
+        "speaker": "ELLA"
+      },
+      {
+        "time": 92.88,
+        "text": "I don't think that you can handle it"
+      },
+      {
+        "time": 95.28,
+        "text": "Last one tried to play me"
+      },
+      {
+        "time": 96.7,
+        "text": "Go ahead ask 'em how they managin'"
+      },
+      {
+        "time": 99.09,
+        "text": "I'm too bossed up",
+        "speaker": "SOOBIN"
+      },
+      {
+        "time": 100.77,
+        "text": "Yea it's gon' cost ya"
+      },
+      {
+        "time": 102.66,
+        "text": "No you don't want none"
+      },
+      {
+        "time": 104.56,
+        "text": "The end white-chalked up"
+      },
+      {
+        "time": 106.88,
+        "text": "We ain't ever gonna stop (stop)",
+        "speaker": "GAWON"
+      },
+      {
+        "time": 108.79,
+        "text": "We ain't ever gonna back down"
+      },
+      {
+        "time": 110.76,
+        "text": "Gonna take it to the top (top)"
+      },
+      {
+        "time": 112.64,
+        "text": "Gonna leave you in the background"
+      },
+      {
+        "time": 114.56,
+        "text": "Give it all give it all we got",
+        "speaker": "ANNA"
+      },
+      {
+        "time": 115.99,
+        "text": "All eyes are on us now (right now)"
+      },
+      {
+        "time": 118.36,
+        "text": "Take your shot take your shot"
+      },
+      {
+        "time": 119.37,
+        "text": "We go in 5 4 3 2"
+      },
+      {
+        "time": 121.94,
+        "text": "I'll let you go first",
+        "speaker": "ELLA"
+      },
+      {
+        "time": 123.38,
+        "text": "I'll do worse"
+      },
+      {
+        "time": 124.35,
+        "text": "Hit 'em where it hit 'em where it hurts"
+      },
+      {
+        "time": 125.78,
+        "text": "Leave you in the dirt"
+      },
+      {
+        "time": 127.15,
+        "text": "Put in work"
+      },
+      {
+        "time": 128.1,
+        "text": "Hit 'em where it hit 'em where it hurts"
+      },
+      {
+        "time": 129.62,
+        "text": "Ahhhh"
+      },
+      {
+        "time": 132.34,
+        "text": "Hit 'em where it hurts",
+        "speaker": "ANNA"
+      },
+      {
+        "time": 133.37,
+        "text": "Ahhhh"
+      },
+      {
+        "time": 136.16,
+        "text": "Hit 'em where it hurts",
+        "speaker": "SOOBIN"
+      },
+      {
+        "time": 137.23,
+        "text": "I'll let you go first",
+        "speaker": "NARIN"
+      },
+      {
+        "time": 138.61,
+        "text": "I'll do worse"
+      },
+      {
+        "time": 139.55,
+        "text": "Hit 'em where it hit 'em where it hurts"
+      },
+      {
+        "time": 141,
+        "text": "Leave you in the dirt"
+      },
+      {
+        "time": 142.39,
+        "text": "Put in work"
+      },
+      {
+        "time": 143.33,
+        "text": "Hit 'em where it hit 'em where it hurts"
+      },
+      {
+        "time": 144.85,
+        "text": "Ahhhh"
+      },
+      {
+        "time": 147.6,
+        "text": "Hit 'em where it hurts",
+        "speaker": "SOOBIN"
+      },
+      {
+        "time": 148.65,
+        "text": "Ahhhh"
+      },
+      {
+        "time": 151.39,
+        "text": "Hit 'em where it hurts",
+        "speaker": "ANNA"
+      },
+      {
+        "time": 159.04,
+        "text": "Hit 'em where it hurts"
+      },
+      {
+        "time": 166.66,
+        "text": "Hit 'em where it hurts"
+      },
+      {
+        "time": 167.59,
+        "text": "♫ [BEAT]"
+      }
+    ]
+  },
+  {
+    "id": "ddi-ro-ri",
+    "title": "DDI RO RI",
+    "album": "BITE NOW - 2nd EP",
+    "releaseDate": "2026-06-01",
+    "duration": 185,
+    "audioUrl": "/music/bite-now/ddi-ro-ri.mp3",
+    "fallbackAudioUrl": "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f792cb.mp3?filename=cyberpunk-2099-122971.mp3",
+    "coverArt": "/music/bite-now/ddi-ro-ri.jpg",
+    "youtubeId": "aHM2RKeMaeM",
+    "lyrics": [
+      {
+        "time": 0.09,
+        "text": "♫ [BEAT]"
+      },
+      {
+        "time": 12.9,
+        "text": "What's the deal? 이건 시작 I feel arenas"
+      },
+      {
+        "time": 16.26,
+        "text": "Shout my name, 난 Korea에서 Ibiza까지 float"
+      },
+      {
+        "time": 20.62,
+        "text": "Set the trends 이미 한 수 위야"
+      },
+      {
+        "time": 23.3,
+        "text": "New EP, made on apple, fresh out the freezer, get a taste"
+      },
+      {
+        "time": 28.3,
+        "text": "내 본색을 감추고 자세는 lowkey"
+      },
+      {
+        "time": 32.15,
+        "text": "백이면 백 빠짐없이 다 속지"
+      },
+      {
+        "time": 35.42,
+        "text": "함부로 틈 보인 네 착한 목덜미"
+      },
+      {
+        "time": 38.91,
+        "text": "단숨에 we bite it, like"
+      },
+      {
+        "time": 40.77,
+        "text": "Me and my girls we on tonight"
+      },
+      {
+        "time": 44.14,
+        "text": "We outside 그저 지켜봐"
+      },
+      {
+        "time": 47.67,
+        "text": "눈을 떠 어둠 속에서"
+      },
+      {
+        "time": 50.53,
+        "text": "Turn it up, all the way up"
+      },
+      {
+        "time": 54.25,
+        "text": "DDI RO RI"
+      },
+      {
+        "time": 56.67,
+        "text": "When I walk in like a threat, like a threat"
+      },
+      {
+        "time": 61.31,
+        "text": "DDI RO RI"
+      },
+      {
+        "time": 63.57,
+        "text": "Hear this song inside your head, your head"
+      },
+      {
+        "time": 67.25,
+        "text": "I be on that new shit, new shit, new shit"
+      },
+      {
+        "time": 70.74,
+        "text": "나머진 다 무시, 무시, 무시"
+      },
+      {
+        "time": 74.18,
+        "text": "You know I'm the blueprint, blueprint, blueprint"
+      },
+      {
+        "time": 77.53,
+        "text": "I be on that new shit, on some new shit"
+      },
+      {
+        "time": 82.83,
+        "text": "Chic한 건 모태, check the label it's black"
+      },
+      {
+        "time": 86.1,
+        "text": "I pull up 네 앞에 눈 감지 마 too fast, okay?"
+      },
+      {
+        "time": 89.73,
+        "text": "I'ma take yours, is that okay? 태생부터 one of a kind"
+      },
+      {
+        "time": 93.02,
+        "text": "Was taking my time, now I'm game okay, okay?"
+      },
+      {
+        "time": 95.78,
+        "text": "Diamond is the key 대화는 사치"
+      },
+      {
+        "time": 98.86,
+        "text": "Tell 'em we gon' get it 쉽게 봤다간 ouchie!"
+      },
+      {
+        "time": 102.34,
+        "text": "절대적이야 supreme, you crave it like a fiend"
+      },
+      {
+        "time": 105.69,
+        "text": "명분이 필요해 give me that, oh, we love to cause a scene"
+      },
+      {
+        "time": 109.02,
+        "text": "Me and my girls we on tonight"
+      },
+      {
+        "time": 112.82,
+        "text": "We outside 그저 지켜봐"
+      },
+      {
+        "time": 116.22,
+        "text": "눈을 떠 어둠 속에서"
+      },
+      {
+        "time": 119.13,
+        "text": "Turn it up, all the way up"
+      },
+      {
+        "time": 122.9,
+        "text": "DDI RO RI"
+      },
+      {
+        "time": 125.3,
+        "text": "When I walk in like a threat, like a threat"
+      },
+      {
+        "time": 129.83,
+        "text": "DDI RO RI"
+      },
+      {
+        "time": 132.18,
+        "text": "Hear this song inside your head, your head"
+      },
+      {
+        "time": 135.82,
+        "text": "I be on that new shit, new shit, new shit"
+      },
+      {
+        "time": 139.27,
+        "text": "나머진 다 무시, 무시, 무시"
+      },
+      {
+        "time": 142.58,
+        "text": "You know I'm the blueprint, blueprint, blueprint"
+      },
+      {
+        "time": 146.1,
+        "text": "I be on that new shit, on some new shit"
+      },
+      {
+        "time": 152.12,
+        "text": "머릿속 울려 퍼지는 melody"
+      },
+      {
+        "time": 155.52,
+        "text": "상상만 해도 너에겐 tragedy"
+      },
+      {
+        "time": 158.83,
+        "text": "거릴 유지해 don't try to talk to me"
+      },
+      {
+        "time": 162.43,
+        "text": "Talk to me like"
+      },
+      {
+        "time": 164.36,
+        "text": "Wow, we pulling up 똑바로 봐"
+      },
+      {
+        "time": 169.4,
+        "text": "길을 터 태도는 loud"
+      },
+      {
+        "time": 172.85,
+        "text": "Yeah they know what we about"
+      },
+      {
+        "time": 176.01,
+        "text": "You hear that DDI RO RI"
+      },
+      {
+        "time": 177.44,
+        "text": "Wow, we pulling up 똑바로 봐"
+      },
+      {
+        "time": 182.56,
+        "text": "길을 터 태도는 loud"
+      },
+      {
+        "time": 185.99,
+        "text": "Yeah they know what we about"
+      },
+      {
+        "time": 189.4,
+        "text": "You hear that DDI RO RI"
+      },
+      {
+        "time": 191.04,
+        "text": "♫ [BEAT]"
+      }
+    ]
+  },
+  {
+    "id": "in-my-hands",
+    "title": "In my hands",
+    "album": "BITE NOW - 2nd EP",
+    "releaseDate": "2026-06-01",
+    "duration": 150,
+    "audioUrl": "/music/bite-now/in-my-hands.mp3",
+    "fallbackAudioUrl": "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f792cb.mp3?filename=cyberpunk-2099-122971.mp3",
+    "coverArt": "/music/bite-now/in-my-hands.jpg",
+    "youtubeId": "MEOVV_OFFICIAL",
+    "lyrics": [
+      {
+        "time": 7.5,
+        "text": "난 잠시 쉴 뿐 잠은 내게 사치"
+      },
+      {
+        "time": 11.17,
+        "text": "거리를 걸을 수 없는 scale, I'm feeling cocky"
+      },
+      {
+        "time": 14.55,
+        "text": "I see it, 가득 찬 일정 따위 can't stop me"
+      },
+      {
+        "time": 17.42,
+        "text": "I'm sorry, I got no time for talkin'"
+      },
+      {
+        "time": 20.11,
+        "text": "Life's so good"
+      },
+      {
+        "time": 22.35,
+        "text": "이 기분대로 run it back, gimme, gimme that"
+      },
+      {
+        "time": 26.31,
+        "text": "Everywhere I look"
+      },
+      {
+        "time": 29.07,
+        "text": "잡히는 대로 we stack, limit, limitless"
+      },
+      {
+        "time": 32.22,
+        "text": "Got the world in my hands"
+      },
+      {
+        "time": 35.56,
+        "text": "난 내 number one fan"
+      },
+      {
+        "time": 38.98,
+        "text": "Make 'em all wanna dance"
+      },
+      {
+        "time": 42.69,
+        "text": "Work, baby, work, show 'em who's back"
+      },
+      {
+        "time": 45.57,
+        "text": "Got the world in my hands"
+      },
+      {
+        "time": 48.8,
+        "text": "난 내 number one fan"
+      },
+      {
+        "time": 52.23,
+        "text": "Just do it 계속해"
+      },
+      {
+        "time": 55.71,
+        "text": "Serve, yeah, we serve, show 'em who's back"
+      },
+      {
+        "time": 58.81,
+        "text": "Got the world in my hands"
+      },
+      {
+        "time": 60.58,
+        "text": "Everyday, everyday, everyday"
+      },
+      {
+        "time": 62.2,
+        "text": "끝없이 올라가 맨 위에"
+      },
+      {
+        "time": 63.85,
+        "text": "그 누가 말리고 막아도 내 바짓가랑일 잡아도"
+      },
+      {
+        "time": 66.45,
+        "text": "I gotta go"
+      },
+      {
+        "time": 67.95,
+        "text": "I be in my zone when they blow up my phone"
+      },
+      {
+        "time": 70.15,
+        "text": "Crossing the line, taking what's mine"
+      },
+      {
+        "time": 71.68,
+        "text": "Say what you wanna say"
+      },
+      {
+        "time": 72.73,
+        "text": "어차피 I'll provе and show"
+      },
+      {
+        "time": 73.52,
+        "text": "Life's so good"
+      },
+      {
+        "time": 75.83,
+        "text": "이 기분대로 run it back, gimme, gimme that"
+      },
+      {
+        "time": 79.78,
+        "text": "Evеrywhere I look"
+      },
+      {
+        "time": 82.43,
+        "text": "잡히는 대로 we stack, limit, limitless"
+      },
+      {
+        "time": 85.6,
+        "text": "Got the world in my hands"
+      },
+      {
+        "time": 88.82,
+        "text": "난 내 number one fan"
+      },
+      {
+        "time": 92.13,
+        "text": "Make 'em all wanna dance"
+      },
+      {
+        "time": 95.98,
+        "text": "Work, baby, work, show 'em who's back"
+      },
+      {
+        "time": 98.97,
+        "text": "Got the world in my hands"
+      },
+      {
+        "time": 102.25,
+        "text": "난 내 number one fan"
+      },
+      {
+        "time": 105.69,
+        "text": "Just do it 계속해"
+      },
+      {
+        "time": 109.23,
+        "text": "Serve, yeah, we serve, show 'em who's back"
+      },
+      {
+        "time": 112.77,
+        "text": "Got the world in my hands"
+      },
+      {
+        "time": 115.56,
+        "text": "난 내 number one fan"
+      },
+      {
+        "time": 118.85,
+        "text": "Make 'em all wanna dance (Dance, dance, dance)"
+      },
+      {
+        "time": 122.63,
+        "text": "Work, baby, work, work, work"
+      },
+      {
+        "time": 125.65,
+        "text": "Got the world in my hands"
+      },
+      {
+        "time": 128.84,
+        "text": "난 내 number one fan"
+      },
+      {
+        "time": 132.2,
+        "text": "Make 'em all wanna dance"
+      },
+      {
+        "time": 135.97,
+        "text": "Work, baby, work, work, work, show 'em MEOVV's back"
+      },
+      {
+        "time": 138.87,
+        "text": "Got the world in my"
+      },
+      {
+        "time": 140.04,
+        "text": "♫ [BEAT]"
+      }
+    ]
+  },
+  {
+    "id": "favorite-song",
+    "title": "Favorite song",
+    "album": "BITE NOW - 2nd EP",
+    "releaseDate": "2026-06-01",
+    "duration": 200,
+    "audioUrl": "/music/bite-now/favorite-song.mp3",
+    "fallbackAudioUrl": "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f792cb.mp3?filename=cyberpunk-2099-122971.mp3",
+    "coverArt": "/music/bite-now/favorite-song.jpg",
+    "youtubeId": "MEOVV_OFFICIAL",
+    "lyrics": [
+      {
+        "time": 9.7,
+        "text": "네가 원하는 건 attention, 싫다면서 날 또 mention"
+      },
+      {
+        "time": 15.91,
+        "text": "왜 예쁜 날 탓해? It's on you"
+      },
+      {
+        "time": 20.64,
+        "text": "그래, take it as a lesson, 딱 한 번 말할게 listen"
+      },
+      {
+        "time": 26.2,
+        "text": "뼛속까지 새겨 like tattoo"
+      },
+      {
+        "time": 30.74,
+        "text": "All the lies all the problems, 알면서도 you can't solve 'em"
+      },
+      {
+        "time": 37.03,
+        "text": "Well, I hope you try something like cardio"
+      },
+      {
+        "time": 42.07,
+        "text": "All my time that you wasted, 더는 숨지 말고 face it"
+      },
+      {
+        "time": 47.61,
+        "text": "이 짧은 걸 못 기다려, it's three little minutes, turn it up, 똑바로 listen"
+      },
+      {
+        "time": 53.43,
+        "text": "I know that you wanna sing along (mm-mm-hmm-hmm)"
+      },
+      {
+        "time": 59.02,
+        "text": "무한 반복 너의 머릿속 (너의 머릿속)"
+      },
+      {
+        "time": 64.13,
+        "text": "아무리 아닌 척해 봐도 (아닌 척해도)"
+      },
+      {
+        "time": 69.41,
+        "text": "Now this is your favorite song"
+      },
+      {
+        "time": 74.14,
+        "text": "You should've thought twice, 핑계는 뻔하지"
+      },
+      {
+        "time": 76.98,
+        "text": "말하다 지쳐버렸어 나까지"
+      },
+      {
+        "time": 79.6,
+        "text": "그래도 웃어넘기고, LOL, babe"
+      },
+      {
+        "time": 82.78,
+        "text": "Me and my girls always on the same page"
+      },
+      {
+        "time": 85.58,
+        "text": "멋대로 벗어나진 못할 걸 no remedy"
+      },
+      {
+        "time": 88.35,
+        "text": "If it were up to me, 추천해 줄게 therapy"
+      },
+      {
+        "time": 90.94,
+        "text": "I hope it comes out in the taxi 가는 길마다"
+      },
+      {
+        "time": 93.69,
+        "text": "Even your doctor's like (damn, I love this song)"
+      },
+      {
+        "time": 94.94,
+        "text": "All the lies all the problems, 알면서도 you can't solve 'em"
+      },
+      {
+        "time": 100.91,
+        "text": "Yeah I hope you try something like cardio"
+      },
+      {
+        "time": 106.09,
+        "text": "All my time that you wasted, 더는 숨지 말고 face it"
+      },
+      {
+        "time": 111.85,
+        "text": "이 짧은 걸 못 기다려, it's three little minutes, turn it up, 똑바로 listen"
+      },
+      {
+        "time": 117.52,
+        "text": "I know that you wanna sing along (mm-mm-hmm-hmm)"
+      },
+      {
+        "time": 122.82,
+        "text": "무한 반복 너의 머릿속 (너의 머릿속)"
+      },
+      {
+        "time": 128.44,
+        "text": "아무리 아닌 척해 봐도 (아닌 척해도)"
+      },
+      {
+        "time": 133.39,
+        "text": "Now this is your favorite song"
+      },
+      {
+        "time": 139.64,
+        "text": "Better soak it up, baby"
+      },
+      {
+        "time": 141.98,
+        "text": "봐주는 건 very last time"
+      },
+      {
+        "time": 144.94,
+        "text": "배로 갚아준다 해도"
+      },
+      {
+        "time": 146.94,
+        "text": "결국엔 I'll forget you by the very last line"
+      },
+      {
+        "time": 150.19,
+        "text": "네 모든 흔적을 take it"
+      },
+      {
+        "time": 152.69,
+        "text": "저 멀리 bye, bye, bye"
+      },
+      {
+        "time": 155.46,
+        "text": "You're out of sight and out of my mind"
+      },
+      {
+        "time": 159.04,
+        "text": "Oh, no"
+      },
+      {
+        "time": 161.71,
+        "text": "And it goes like"
+      },
+      {
+        "time": 162.93,
+        "text": "La-la-la-la-la-la-la, la-la-la"
+      },
+      {
+        "time": 168.06,
+        "text": "La-la-la-la-la-la-la, la-la-la"
+      },
+      {
+        "time": 173.55,
+        "text": "아무리 아닌 척해 봐도 (아닌 척해도)"
+      },
+      {
+        "time": 178.85,
+        "text": "Now this is your favorite song"
+      },
+      {
+        "time": 183.9,
+        "text": "Now this is your favorite song"
+      },
+      {
+        "time": 189.36,
+        "text": "Now this is your favorite song"
+      },
+      {
+        "time": 195.8,
+        "text": "♫ [BEAT]"
+      }
+    ]
+  },
+  {
+    "id": "revenge",
+    "title": "Revenge",
+    "album": "BITE NOW - 2nd EP",
+    "releaseDate": "2026-06-01",
+    "duration": 182,
+    "audioUrl": "/music/bite-now/revenge.mp3",
+    "fallbackAudioUrl": "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f792cb.mp3?filename=cyberpunk-2099-122971.mp3",
+    "coverArt": "/music/bite-now/revenge.jpg",
+    "youtubeId": "MEOVV_OFFICIAL",
+    "lyrics": [
+      {
+        "time": 14.05,
+        "text": "말해봐 네 point of view"
+      },
+      {
+        "time": 17.69,
+        "text": "Lying's never new to you, talk is cheap"
+      },
+      {
+        "time": 20.85,
+        "text": "You know how to light a fuse"
+      },
+      {
+        "time": 23.91,
+        "text": "길은 잃어도, I ain't gon' trip"
+      },
+      {
+        "time": 27.48,
+        "text": "I can't even think straight"
+      },
+      {
+        "time": 30.53,
+        "text": "갇혔어 너란 게임에"
+      },
+      {
+        "time": 34.12,
+        "text": "벗어날 수 없는 obsession"
+      },
+      {
+        "time": 36.84,
+        "text": "Back to the same place"
+      },
+      {
+        "time": 38.96,
+        "text": "I'm talking 'bout revenge"
+      },
+      {
+        "time": 42.38,
+        "text": "Talking 'bout revenge"
+      },
+      {
+        "time": 45.8,
+        "text": "Hate I had to do this"
+      },
+      {
+        "time": 49.08,
+        "text": "But damn, you made me do it"
+      },
+      {
+        "time": 52.02,
+        "text": "You taught me 'bout revenge"
+      },
+      {
+        "time": 55.73,
+        "text": "I'll teach you all again"
+      },
+      {
+        "time": 58.88,
+        "text": "It's not a happy ending"
+      },
+      {
+        "time": 62.38,
+        "text": "Told you from the beginning, oh"
+      },
+      {
+        "time": 66.9,
+        "text": "What would it take you to fall"
+      },
+      {
+        "time": 69.71,
+        "text": "I'll watch you when you're losing it all"
+      },
+      {
+        "time": 72.57,
+        "text": "버려져 버린 chances, after chances"
+      },
+      {
+        "time": 76.34,
+        "text": "And still you wanna go to war"
+      },
+      {
+        "time": 80.67,
+        "text": "결국엔 돌아오는 건 pain"
+      },
+      {
+        "time": 84.63,
+        "text": "Smarter to stay in your lane"
+      },
+      {
+        "time": 87.96,
+        "text": "'Cause you messed it up big, yeah"
+      },
+      {
+        "time": 92.16,
+        "text": "Got me thinking 'bout rеvenge"
+      },
+      {
+        "time": 95.98,
+        "text": "Talking 'bout revеnge"
+      },
+      {
+        "time": 99.08,
+        "text": "Hate I had to do this"
+      },
+      {
+        "time": 102.37,
+        "text": "But damn, you made me do it"
+      },
+      {
+        "time": 105.57,
+        "text": "You taught me 'bout revenge"
+      },
+      {
+        "time": 108.97,
+        "text": "I'll teach you all again"
+      },
+      {
+        "time": 112.22,
+        "text": "It's not a happy ending"
+      },
+      {
+        "time": 115.72,
+        "text": "Told you from the beginning, oh"
+      },
+      {
+        "time": 119.15,
+        "text": "Said I never tried enough to put my trust in you"
+      },
+      {
+        "time": 122.34,
+        "text": "이제 와보니 I'm the one who's being lied to"
+      },
+      {
+        "time": 125.58,
+        "text": "We're never on the same page"
+      },
+      {
+        "time": 129.05,
+        "text": "And I'm so over playing games"
+      },
+      {
+        "time": 133.5,
+        "text": "Now I'm the crash out, babe"
+      },
+      {
+        "time": 135.42,
+        "text": "Guess that's the part I'll play"
+      },
+      {
+        "time": 137.08,
+        "text": "Outta my mind but I don't mind"
+      },
+      {
+        "time": 138.84,
+        "text": "'Cause you made me this way"
+      },
+      {
+        "time": 140.39,
+        "text": "도망갈 수 없어 I'll get my way"
+      },
+      {
+        "time": 143.55,
+        "text": "돌아가도 it's still a risk I'll take"
+      },
+      {
+        "time": 145.73,
+        "text": "I'm talking 'bout revenge (I'm talking 'bout revenge)"
+      },
+      {
+        "time": 149.17,
+        "text": "Talking 'bout revenge (ooh)"
+      },
+      {
+        "time": 152.58,
+        "text": "Hate I had to do this (hate I had to do this)"
+      },
+      {
+        "time": 155.66,
+        "text": "But damn, you made me do it (ooh)"
+      },
+      {
+        "time": 159.06,
+        "text": "You taught me 'bout revenge"
+      },
+      {
+        "time": 162.47,
+        "text": "I'll teach you all again"
+      },
+      {
+        "time": 165.86,
+        "text": "It's not a happy ending (mm)"
+      },
+      {
+        "time": 168.76,
+        "text": "Told you from the beginning"
+      },
+      {
+        "time": 173.02,
+        "text": "♫ [BEAT]"
+      }
+    ]
+  }
+]

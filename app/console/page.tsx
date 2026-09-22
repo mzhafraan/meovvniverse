@@ -1,12 +1,12 @@
 import { getTracks } from "@/lib/sanity/client";
-import { MediaConsole } from "@/components/sections/MediaConsole";
+import { ConsoleTabsView } from "@/components/console/ConsoleTabsView";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Archaic Media Console | MEOVVNIVERSE",
-  description: "Mechanical audio player with analog progress caliper and synchronized lyrics stream for MEOVV.",
+  title: "Media Console & Vinyl Player | MEOVVNIVERSE",
+  description: "Mechanical audio player and interactive spinning vinyl player widget with synchronized lyrics for MEOVV.",
 };
 
 export default async function ConsoleDedicatedPage() {
@@ -26,8 +26,8 @@ export default async function ConsoleDedicatedPage() {
           </Link>
         </div>
 
-        {/* Embedded Console Component */}
-        <MediaConsole tracks={tracks} />
+        {/* Embedded Console Component with Vinyl Widget Switcher */}
+        <ConsoleTabsView tracks={tracks} />
       </div>
     </div>
   );

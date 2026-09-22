@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Navbar } from "@/components/ui/Navbar";
+import { GeistPixelSquare } from "geist/font/pixel";
+import { FloatingNav } from "@/components/ui/FloatingNav";
 import { Footer } from "@/components/ui/Footer";
 import { StaticNoise } from "@/components/ui/StaticNoise";
+import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -41,19 +43,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={GeistPixelSquare.variable}>
       <body className="bg-void text-ash min-h-screen flex flex-col antialiased selection:bg-chrome selection:text-void">
         {/* Global Grain & Scanline Shader Overlay */}
         <StaticNoise opacity={0.06} />
 
-        {/* Global Navigation */}
-        <Navbar />
+        {/* Lenis Smooth Scrolling Provider synchronized with GSAP ScrollTrigger */}
+        <SmoothScrollProvider>
+          {/* Floating Navigation — Top Right Corner */}
+          <FloatingNav />
 
-        {/* Main Content Area */}
-        <main className="flex-1 flex flex-col">{children}</main>
+          {/* Main Content Area */}
+          <main className="flex-1 flex flex-col">{children}</main>
 
-        {/* Global Footer */}
-        <Footer />
+          {/* Global Footer */}
+          <Footer />
+        </SmoothScrollProvider>
       </body>
     </html>
   );

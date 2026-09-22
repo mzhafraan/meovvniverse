@@ -1,8 +1,10 @@
 import { getMembers, getTracks, getLiveSchedules, getFeedItems } from "@/lib/sanity/client";
+import { IntroLogoSection } from "@/components/sections/IntroLogoSection";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { LedMarqueeDivider } from "@/components/ui/LedMarqueeDivider";
 import { CovenSection } from "@/components/sections/CovenSection";
 import { SocialTerminal } from "@/components/sections/SocialTerminal";
-import { MediaConsole } from "@/components/sections/MediaConsole";
+import { AudioVaultSection } from "@/components/sections/AudioVaultSection";
 
 export const revalidate = 3600; // ISR 1 hour
 
@@ -16,8 +18,14 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col w-full">
-      {/* 01: The Cinematic Portal */}
+      {/* 00: Scroll-Driven Logo Tracer & Awakening Intro */}
+      <IntroLogoSection />
+
+      {/* 01: The Cinematic Portal (Featuring Large Member Portrait & Geist Pixel Typography) */}
       <HeroSection />
+
+      {/* LED Marquee Divider: Cybernetic Running Ticker with Glitch Effects */}
+      <LedMarqueeDivider />
 
       {/* 02: The Coven (Dynamic Member Wiki) */}
       <CovenSection members={members} />
@@ -25,8 +33,9 @@ export default async function HomePage() {
       {/* 03: Social Terminal (Feed Aggregator) */}
       <SocialTerminal feedItems={feedItems} liveSchedules={liveSchedules} />
 
-      {/* 04: Archaic Media Console */}
-      <MediaConsole tracks={tracks} />
+      {/* 04: Audio Vault — Interactive Vinyl Player Widget */}
+      <AudioVaultSection />
     </div>
   );
 }
+

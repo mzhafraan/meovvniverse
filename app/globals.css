@@ -1,4 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lovers+Quarrel&family=Pixelify+Sans:wght@400..700&family=Silkscreen:wght@400;700&family=Bodoni+Moda:ital,opsz,wght@1,6..96,400;1,6..96,600;1,6..96,700&family=Playfair+Display:ital,wght@1,400;1,600;1,700&family=UnifrakturMaguntia&family=Pirata+One&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+/* Local Gothic Blackletter: Bathory Font */
+@font-face {
+  font-family: 'Bathory';
+  src: url('/fonts/Bathory.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bathory';
+  src: url('/fonts/Bathory-Oblique.otf') format('opentype');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Romellis Light Semi Condensed Italic */
+@font-face {
+  font-family: 'Romellis Light Semi Condensed Italic';
+  src: local('Romellis Light Semi Condensed Italic'),
+       local('Romellis-LightSemiCondensedItalic'),
+       local('Romellis Light'),
+       local('Romellis');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* BT Glyphius Regular */
+@font-face {
+  font-family: 'BT Glyphius Regular';
+  src: local('BT Glyphius Regular'),
+       local('BTGlyphius-Regular'),
+       local('BT Glyphius'),
+       local('BT Glyphius Regular Placeholder');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BT Glyphius Regular Placeholder';
+  src: local('BT Glyphius Regular Placeholder'),
+       local('BTGlyphius-RegularPlaceholder');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -13,17 +63,18 @@
     --color-ash: #F0F0F0;
     --color-glitch-white: #FFFFFF;
     --color-rust: #3A2E2E;
+    --color-volt: #CCFF00;
   }
 
   body {
     background-color: var(--color-void);
     color: var(--color-ash);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: "BT Glyphius Regular", "BT Glyphius Regular Placeholder", "Inter", system-ui, -apple-system, sans-serif;
     overflow-x: hidden;
   }
 
   ::selection {
-    background-color: #C0C0C0;
+    background-color: #CCFF00;
     color: #08080C;
   }
 
@@ -53,6 +104,442 @@
   text-shadow: 0 0 12px rgba(192, 192, 192, 0.4);
 }
 
+.text-shadow-volt {
+  text-shadow: 0 0 15px rgba(204, 255, 0, 0.5), 0 0 30px rgba(204, 255, 0, 0.25);
+}
+
+.drop-shadow-volt {
+  filter: drop-shadow(0 0 12px rgba(204, 255, 0, 0.65)) drop-shadow(0 0 25px rgba(204, 255, 0, 0.35));
+}
+
 .text-shadow-glitch {
   text-shadow: -2px 0 0 rgba(255, 255, 255, 0.8), 2px 0 0 rgba(100, 100, 100, 0.8);
 }
+
+@keyframes cycleProgress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+/* Continuous Marquee animations */
+@keyframes marqueeLeft {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeRight {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-left {
+  animation: marqueeLeft 60s linear infinite;
+}
+
+.animate-marquee-right {
+  animation: marqueeRight 60s linear infinite;
+}
+
+/* Electrical Short-Circuit / High-Voltage Neon Konslet Animation */
+@keyframes shortCircuit {
+  0%, 100% {
+    opacity: 1;
+    filter: brightness(1) contrast(1);
+    transform: translate(0, 0);
+  }
+  1.5% {
+    opacity: 0.15;
+    filter: brightness(0.4) contrast(1.8);
+    transform: translate(-2px, 1px);
+  }
+  2.5% {
+    opacity: 1;
+    filter: brightness(1.8) contrast(1.4) drop-shadow(0 0 15px #CCFF00);
+    transform: translate(2px, -1px);
+  }
+  3.5% {
+    opacity: 0.05;
+    filter: brightness(0.2);
+  }
+  5% {
+    opacity: 0.95;
+    filter: brightness(1.4);
+    transform: translate(0, 0);
+  }
+  6.5% {
+    opacity: 0.3;
+  }
+  7.5% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  38% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  39% {
+    opacity: 0.2;
+    filter: brightness(2.2) drop-shadow(0 0 30px #CCFF00);
+    transform: translate(3px, 0);
+  }
+  40% {
+    opacity: 0.85;
+    filter: brightness(0.6);
+  }
+  41% {
+    opacity: 0.08;
+  }
+  42% {
+    opacity: 1;
+    filter: brightness(1.9) contrast(1.3);
+    transform: translate(-2px, 0);
+  }
+  43.5% {
+    opacity: 0.4;
+    filter: brightness(1.1);
+  }
+  44.5% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  68.8% {
+    opacity: 0.1;
+    filter: brightness(0.3);
+  }
+  69.6% {
+    opacity: 0.9;
+    filter: brightness(1.6) drop-shadow(0 0 20px #ffffff);
+  }
+  70.4% {
+    opacity: 0.2;
+  }
+  71.2% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+.animate-short-circuit {
+  animation: shortCircuit 3.8s infinite;
+}
+
+/* ========================================================================= */
+/* Music Player Widget Styles (Interactive Disc, Scales Visualizer, Controls) */
+/* ========================================================================= */
+
+@keyframes cover-in {
+  from {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cover-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes ti-in {
+  from {
+    opacity: 0;
+    transform: translateX(var(--dx));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes ti-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(var(--dx));
+  }
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 520px;
+  background: #0B0B0F;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95);
+  user-select: none;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: rgba(204, 255, 0, 0.4);
+}
+
+.mask {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin: 12px auto 20px auto;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.85), inset 0 0 0 3px #1F1F24;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.mask:hover {
+  box-shadow: 0 15px 40px rgba(204, 255, 0, 0.25), inset 0 0 0 3px #CCFF00;
+}
+
+.mask.is-zoomed {
+  transform: scale(1.15);
+  box-shadow: 0 20px 50px rgba(204, 255, 0, 0.35), inset 0 0 0 3px #CCFF00;
+}
+
+.spin {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.cover-enter {
+  animation: cover-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.cover-exit {
+  animation: cover-out 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #08080C;
+  border: 3px solid #26262B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.hole-inner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #CCFF00;
+  box-shadow: 0 0 10px #CCFF00;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+}
+
+.scales {
+  width: 100%;
+  height: 46px;
+  fill: #CCFF00;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 6px rgba(204, 255, 0, 0.4));
+}
+
+.track-info {
+  position: relative;
+  min-height: 54px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.ti-layer {
+  width: 100%;
+}
+
+.ti-abs {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.artist {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #6B6B75;
+  font-family: var(--font-geist-pixel-square), monospace;
+}
+
+.artist.ti-enter, .track.ti-enter {
+  animation: ti-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.artist.ti-exit, .track.ti-exit {
+  animation: ti-out 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.track {
+  font-size: 22px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+  font-family: var(--font-geist-pixel-square), monospace;
+}
+
+.bar {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background: #1A1A20;
+  cursor: pointer;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6B6B75, #CCFF00);
+  box-shadow: 0 0 10px rgba(204, 255, 0, 0.5);
+  transition: width 0.08s linear;
+}
+
+.time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #6B6B75;
+  font-family: var(--font-geist-pixel-square), monospace;
+  margin-top: -6px;
+  letter-spacing: 0.1em;
+}
+
+.time .sep {
+  opacity: 0.4;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding-top: 4px;
+}
+
+.ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #14141A;
+  border: 1px solid #26262B;
+  color: #C0C0C0;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ctrl:hover {
+  color: #FFFFFF;
+  border-color: #CCFF00;
+  transform: scale(1.08);
+}
+
+.ctrl:active {
+  transform: scale(0.94);
+}
+
+.ctrl-play {
+  width: 52px;
+  height: 52px;
+  background: #CCFF00;
+  color: #08080C;
+  border-color: #CCFF00;
+  box-shadow: 0 0 18px rgba(204, 255, 0, 0.45);
+}
+
+.ctrl-play:hover {
+  background: #FFFFFF;
+  color: #08080C;
+  border-color: #FFFFFF;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+  transform: scale(1.08);
+}
+
+.ctrl-toggle.is-active {
+  color: #CCFF00;
+  border-color: #CCFF00;
+  box-shadow: 0 0 12px rgba(204, 255, 0, 0.35);
+}
+
+.ctrl-loop {
+  position: relative;
+}
+
+.loop-one {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  font-weight: bold;
+  color: #CCFF00;
+  font-family: var(--font-geist-pixel-square), monospace;
+}
+
+.mode-one .loop-one {
+  display: block;
+}
+
+.mode-one svg {
+  opacity: 0.2;
+}
+
+

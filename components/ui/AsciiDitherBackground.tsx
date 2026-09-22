@@ -91,13 +91,16 @@ export function AsciiDitherBackground({
   const imgRef = useRef<HTMLImageElement | null>(null);
   const animFrameRef = useRef<number>(0);
   const timeRef = useRef<number>(0);
+  const isVisibleRef = useRef<boolean>(true);
+  const lastRenderTimeRef = useRef<number>(0);
 
-  // Cached grid data (calculated ONCE on load/resize, NOT every frame)
+  // Cached grid data (calculated ONCE on load/resize)
   const cachedCellsRef = useRef<CachedCell[]>([]);
   const gridDimsRef = useRef<{ cols: number; rows: number }>({ cols: 0, rows: 0 });
 
-  // Reusable offscreen canvas for resizing
-  const offscreenCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  // Reusable offscreen low-res buffer for ultra-fast pixel rendering
+  const lowResCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const lowResImageDataRef = useRef<ImageData | null>(null);
 
   const dustParticlesRef = useRef<
     Array<{ x: number; y: number; size: number; opacity: number; vx: number; vy: number; life: number }>
@@ -108,7 +111,7 @@ export function AsciiDitherBackground({
   // Initialize film dust particles once
   const initDust = useCallback(
     (w: number, h: number) => {
-      const count = Math.floor((config.filmDustIntensity / 100) * 35) + 10;
+      const count = Math.floor((config.filmDustIntensity / 100) * 25) + 6;
       dustParticlesRef.current = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
@@ -133,18 +136,18 @@ export function AsciiDitherBackground({
       const rows = Math.ceil(h / cellSize);
       gridDimsRef.current = { cols, rows };
 
-      // Reuse single offscreen canvas
-      if (!offscreenCanvasRef.current) {
-        offscreenCanvasRef.current = document.createElement("canvas");
+      // Initialize or resize low-res canvas & ImageData buffer
+      if (!lowResCanvasRef.current) {
+        lowResCanvasRef.current = document.createElement("canvas");
       }
-      const offscreen = offscreenCanvasRef.current;
-      offscreen.width = cols;
-      offscreen.height = rows;
+      const lowResCanvas = lowResCanvasRef.current;
+      lowResCanvas.width = cols;
+      lowResCanvas.height = rows;
 
-      const offCtx = offscreen.getContext("2d", { willReadFrequently: true });
+      const offCtx = lowResCanvas.getContext("2d", { willReadFrequently: true });
       if (!offCtx) return;
 
-      // Smart focal aspect cover: Keep members' faces and silhouettes visible
+      // Smart focal aspect cover
       const imgW = img.naturalWidth;
       const imgH = img.naturalHeight;
       const imgAspect = imgW / imgH;
@@ -164,13 +167,16 @@ export function AsciiDitherBackground({
         sh = imgW / canvasAspect;
         sx = 0;
         sw = imgW;
-        sy = Math.max(0, (imgH - sh) * 0.15); // Biased to heads/faces
+        sy = Math.max(0, (imgH - sh) * 0.15);
       }
 
-      // Draw directly downscaled to cols x rows (Hardware GPU downscale)
+      // Fast hardware downscale to cols x rows
       offCtx.drawImage(img, sx, sy, sw, sh, 0, 0, cols, rows);
       const imgData = offCtx.getImageData(0, 0, cols, rows);
       const pixels = imgData.data;
+
+      // Create reusable ImageData for drawing frames
+      lowResImageDataRef.current = offCtx.createImageData(cols, rows);
 
       const bAdj = brightness * 2.55;
       const cFactor = (259 * (contrast + 255)) / (255 * (259 - contrast));
@@ -229,8 +235,21 @@ export function AsciiDitherBackground({
     [config]
   );
 
-  // Fast animation render loop (ZERO allocation, pure arithmetic rendering)
-  const render = useCallback(() => {
+  // Ultra-optimized render loop using direct Uint32Array pixel buffer
+  const render = useCallback((timestamp: number) => {
+    // If element is off-screen (scrolled past), skip rendering completely to save CPU!
+    if (!isVisibleRef.current) {
+      animFrameRef.current = requestAnimationFrame(render);
+      return;
+    }
+
+    // Limit animation to ~30 FPS for smooth retro dither feel + 50% CPU reduction
+    if (timestamp - lastRenderTimeRef.current < 32) {
+      animFrameRef.current = requestAnimationFrame(render);
+      return;
+    }
+    lastRenderTimeRef.current = timestamp;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -242,13 +261,16 @@ export function AsciiDitherBackground({
     if (w === 0 || h === 0) return;
 
     const cells = cachedCellsRef.current;
-    if (cells.length === 0) {
+    const { cols, rows } = gridDimsRef.current;
+    const lowResCanvas = lowResCanvasRef.current;
+    const lowResImgData = lowResImageDataRef.current;
+
+    if (cells.length === 0 || !lowResCanvas || !lowResImgData || cols === 0 || rows === 0) {
       animFrameRef.current = requestAnimationFrame(render);
       return;
     }
 
     const {
-      cellSize,
       density,
       animSpeed,
       animStyle,
@@ -272,17 +294,16 @@ export function AsciiDitherBackground({
     const focusBand = tiltPosition / 100;
     const focusHalf = tiltFocus / 100 / 2;
     const feather = tiltFeather / 100;
-    const chromOffset = chromaticEnabled ? (chromaticIntensity / 100) * cellSize * 0.6 : 0;
 
-    // Clear with background void
-    ctx.fillStyle = "#08080C";
-    ctx.fillRect(0, 0, w, h);
+    // Direct 32-bit pixel buffer (ARGB / ABGR in RAM - lightning fast!)
+    const buf32 = new Uint32Array(lowResImgData.data.buffer);
+    // Fill with solid void background #08080C (0xFF0C0808 in Little Endian ABGR)
+    buf32.fill(0xff0c0808);
 
-    // Draw pre-cached dither cells
     const len = cells.length;
     for (let i = 0; i < len; i++) {
       const cell = cells[i];
-      const { col, row, x, y, r, g, b, luminance } = cell;
+      const { col, row, y, r, g, b, luminance } = cell;
 
       // Tilt-shift focus cull
       if (tiltBlur) {
@@ -309,30 +330,53 @@ export function AsciiDitherBackground({
       const bayerVal = BAYER_4X4[row % 4][col % 4] / 16;
 
       if (modLum > bayerVal * densityMod) {
-        const alpha = Math.min(1, modLum * 1.35 + 0.15);
-        const size = cellSize * (0.35 + modLum * 0.65);
+        const alpha = Math.min(255, Math.floor((modLum * 1.35 + 0.15) * 255));
+        const colorR = Math.min(255, Math.max(0, Math.floor(r * animMod)));
+        const colorG = Math.min(255, Math.max(0, Math.floor(g * animMod)));
+        const colorB = Math.min(255, Math.max(0, Math.floor(b * animMod)));
 
-        const colorR = Math.round(Math.max(0, Math.min(255, r * animMod)));
-        const colorG = Math.round(Math.max(0, Math.min(255, g * animMod)));
-        const colorB = Math.round(Math.max(0, Math.min(255, b * animMod)));
+        const pixelIdx = row * cols + col;
 
-        // Chromatic split
-        if (chromaticEnabled && chromOffset > 0) {
-          ctx.fillStyle = `rgba(${Math.min(255, colorR + 35)}, 0, 0, ${alpha * 0.3})`;
-          ctx.fillRect(x - size / 2 - chromOffset, y - size / 2, size, size);
-          ctx.fillStyle = `rgba(0, 0, ${Math.min(255, colorB + 35)}, ${alpha * 0.3})`;
-          ctx.fillRect(x - size / 2 + chromOffset, y - size / 2, size, size);
+        // Chromatic aberration via offset pixel channels
+        if (chromaticEnabled && chromaticIntensity > 0) {
+          const chromShift = 1;
+          // Red channel shift left
+          if (col > chromShift) {
+            const leftIdx = row * cols + (col - chromShift);
+            const cur = buf32[leftIdx];
+            const curR = cur & 0xff;
+            const newR = Math.min(255, curR + Math.floor(colorR * 0.3));
+            buf32[leftIdx] = (cur & 0xffffff00) | newR;
+          }
+          // Blue channel shift right
+          if (col < cols - chromShift) {
+            const rightIdx = row * cols + (col + chromShift);
+            const cur = buf32[rightIdx];
+            const curB = (cur >> 16) & 0xff;
+            const newB = Math.min(255, curB + Math.floor(colorB * 0.3));
+            buf32[rightIdx] = (cur & 0xff00ffff) | (newB << 16);
+          }
         }
 
-        ctx.fillStyle = `rgba(${colorR}, ${colorG}, ${colorB}, ${alpha})`;
-        ctx.fillRect(x - size / 2, y - size / 2, size, size);
+        // Put color into 32-bit pixel: (Alpha << 24) | (Blue << 16) | (Green << 8) | Red
+        buf32[pixelIdx] = (alpha << 24) | (colorB << 16) | (colorG << 8) | colorR;
       }
     }
 
-    // Halftone overlay
+    // Write the low-res pixel buffer to offscreen canvas
+    const lowResCtx = lowResCanvas.getContext("2d");
+    if (lowResCtx) {
+      lowResCtx.putImageData(lowResImgData, 0, 0);
+    }
+
+    // Render scaled up to main canvas in ONE single draw call with crisp pixelated scaling
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(lowResCanvas, 0, 0, w, h);
+
+    // Subtle Halftone Overlay (rendered lightly with small step count)
     if (halftoneEnabled && halftoneIntensity > 0) {
-      const htStep = 12;
-      ctx.fillStyle = `rgba(255, 255, 255, ${(halftoneIntensity / 100) * 0.08})`;
+      const htStep = 16;
+      ctx.fillStyle = `rgba(255, 255, 255, ${(halftoneIntensity / 100) * 0.05})`;
       for (let hy = 0; hy < h; hy += htStep) {
         for (let hx = 0; hx < w; hx += htStep) {
           const xOffset = (hy / htStep) % 2 === 0 ? 0 : htStep / 2;
@@ -383,7 +427,7 @@ export function AsciiDitherBackground({
     animFrameRef.current = requestAnimationFrame(render);
   }, [config]);
 
-  // Load image and manage window resizing
+  // Load image and manage window resizing + IntersectionObserver for visibility
   useEffect(() => {
     const img = new window.Image();
     img.crossOrigin = "anonymous";
@@ -419,10 +463,25 @@ export function AsciiDitherBackground({
 
       window.addEventListener("resize", updateDimensions);
 
+      // Intersection Observer: Pause animation when off-screen!
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            isVisibleRef.current = entry.isIntersecting;
+          });
+        },
+        { threshold: 0.05 }
+      );
+
+      if (containerRef.current) {
+        observer.observe(containerRef.current);
+      }
+
       timeRef.current = 0;
       animFrameRef.current = requestAnimationFrame(render);
 
       return () => {
+        observer.disconnect();
         resizeObserver.disconnect();
         window.removeEventListener("resize", updateDimensions);
       };

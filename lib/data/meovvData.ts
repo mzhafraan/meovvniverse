@@ -1,4 +1,5 @@
 import { Member, Track, LiveScheduleItem, FeedItem } from "@/types";
+import biteNowTracksData from "./biteNowTracks.json";
 
 export const MEMBERS: Member[] = [
   {
@@ -189,7 +190,30 @@ export const MEMBERS: Member[] = [
   }
 ];
 
+const BITE_NOW_EP_TRACKS: Track[] = (biteNowTracksData as any[]).map((t) => ({
+  id: t.id,
+  title: t.title,
+  album: t.album,
+  releaseDate: t.releaseDate,
+  duration: t.duration,
+  audioUrl: `/music/bite-now/${t.id}.mp3`,
+  fallbackAudioUrl: t.fallbackAudioUrl,
+  coverArt: t.coverArt,
+  youtubeId: t.youtubeId,
+  lyrics: t.lyrics,
+}));
+
+// Official BITE NOW EP track order with DDI RO RI title track
+const orderedBiteNowTracks: Track[] = [
+  BITE_NOW_EP_TRACKS.find((t) => t.id === "ddi-ro-ri") || BITE_NOW_EP_TRACKS[0],
+  BITE_NOW_EP_TRACKS.find((t) => t.id === "hit-em") || BITE_NOW_EP_TRACKS[1],
+  BITE_NOW_EP_TRACKS.find((t) => t.id === "in-my-hands") || BITE_NOW_EP_TRACKS[2],
+  BITE_NOW_EP_TRACKS.find((t) => t.id === "favorite-song") || BITE_NOW_EP_TRACKS[3],
+  BITE_NOW_EP_TRACKS.find((t) => t.id === "revenge") || BITE_NOW_EP_TRACKS[4],
+].filter(Boolean);
+
 export const TRACKS: Track[] = [
+  ...orderedBiteNowTracks,
   {
     id: "meow",
     title: "MEOW",
@@ -243,25 +267,6 @@ export const TRACKS: Track[] = [
       { time: 52, text: "Danger tastes so sweet when you are near", speaker: "SOOIN" },
       { time: 60, text: "Corroded signals, loud and clear", speaker: "GAWON" },
       { time: 70, text: "[TRANSMISSION TERMINATED]" }
-    ]
-  },
-  {
-    id: "bite-now",
-    title: "Ddi Ro Ri (Bite Now)",
-    album: "Bite Now - 2nd EP",
-    releaseDate: "2026-06-12",
-    duration: 195,
-    audioUrl: "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f792cb.mp3?filename=cyberpunk-2099-122971.mp3",
-    coverArt: "/members/GAWON.jpg",
-    youtubeId: "8A8c4zU2vB0",
-    lyrics: [
-      { time: 0, text: "[SECTOR BITE NOW :: FULL PROTOCOL ACTIVE]" },
-      { time: 6, text: "Ddi Ro Ri, rhythm breaking through the cage", speaker: "NARIN" },
-      { time: 12, text: "Turn the static up, write the next page", speaker: "ELLA" },
-      { time: 18, text: "Raw metal clashing on the asphalt floor", speaker: "SOOIN" },
-      { time: 24, text: "You wanted gothic thunder? Here is more", speaker: "ANNA" },
-      { time: 30, text: "Bite now, take the strike, make it clean", speaker: "GAWON" },
-      { time: 38, text: "Coldest queens you've ever seen", speaker: "ALL" }
     ]
   }
 ];

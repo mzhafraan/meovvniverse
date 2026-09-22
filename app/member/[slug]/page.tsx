@@ -26,8 +26,8 @@ export async function generateMetadata({ params }: MemberPageProps): Promise<Met
   }
 
   return {
-    title: `${member.name} (${member.koreanName}) | MEOVV THE COVEN`,
-    description: `Official archive codex for ${member.name} of MEOVV. Positions: ${member.positions.join(", ")}. MBTI: ${member.mbti}, Zodiac: ${member.zodiac}.`,
+    title: `${member.name} (${member.koreanName}) | MEOVV`,
+    description: `Official archive and profile for ${member.name} of MEOVV. Positions: ${member.positions.join(", ")}. MBTI: ${member.mbti}, Zodiac: ${member.zodiac}.`,
   };
 }
 
@@ -113,14 +113,14 @@ export default async function MemberDetailPage({ params }: MemberPageProps) {
           <div className="lg:col-span-7 space-y-8">
             {/* Header: Names & Positions */}
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 border border-chrome/30 bg-concrete-dark text-[10px] font-mono tracking-widest text-chrome uppercase">
-                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                CODEX IDENTIFIER // SECTOR 0{currentIndex + 1}
+              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 border border-concrete-light bg-concrete-dark text-[11px] font-mono tracking-widest text-chrome uppercase">
+                <span className="w-1.5 h-1.5 bg-[#CCFF00] rounded-full" />
+                MEMBER PROFILE · 0{currentIndex + 1}
               </div>
 
               <div className="flex items-baseline gap-4 flex-wrap">
-                <h1 className="font-gothic text-4xl sm:text-6xl font-extrabold tracking-[0.15em] text-white uppercase">
-                  {member.name}
+                <h1 className="font-bathory text-5xl sm:text-7xl font-normal tracking-wide text-white">
+                  {member.name.charAt(0).toUpperCase() + member.name.slice(1).toLowerCase()}
                 </h1>
                 <span className="font-sans text-lg sm:text-xl text-fog font-medium">
                   {member.koreanName}
@@ -131,7 +131,7 @@ export default async function MemberDetailPage({ params }: MemberPageProps) {
                 {member.positions.map((pos) => (
                   <span
                     key={pos}
-                    className="px-3 py-1 bg-concrete-dark border border-chrome/40 text-xs font-mono text-chrome tracking-widest uppercase"
+                    className="px-3 py-1 bg-concrete-dark border border-concrete-light text-xs font-mono text-ash tracking-widest uppercase"
                   >
                     {pos}
                   </span>
@@ -139,35 +139,35 @@ export default async function MemberDetailPage({ params }: MemberPageProps) {
               </div>
             </div>
 
-            {/* Telemetry Stats Grid (PRD 4.2.5) */}
+            {/* Stats Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <div className="p-3 bg-concrete-dark/90 border border-concrete-light">
-                <div className="text-[9px] font-mono text-fog tracking-widest uppercase">MBTI CODE</div>
+                <div className="text-[10px] font-mono text-fog tracking-widest uppercase">MBTI</div>
                 <div className="font-mono text-base font-bold text-white mt-1">{member.mbti}</div>
               </div>
 
               <div className="p-3 bg-concrete-dark/90 border border-concrete-light">
-                <div className="text-[9px] font-mono text-fog tracking-widest uppercase">ZODIAC SIGN</div>
+                <div className="text-[10px] font-mono text-fog tracking-widest uppercase">ZODIAC</div>
                 <div className="font-mono text-base font-bold text-white mt-1">{member.zodiac}</div>
               </div>
 
               <div className="p-3 bg-concrete-dark/90 border border-concrete-light">
-                <div className="text-[9px] font-mono text-fog tracking-widest uppercase">HEIGHT</div>
+                <div className="text-[10px] font-mono text-fog tracking-widest uppercase">HEIGHT</div>
                 <div className="font-mono text-base font-bold text-white mt-1">{member.height}</div>
               </div>
 
               <div className="p-3 bg-concrete-dark/90 border border-concrete-light">
-                <div className="text-[9px] font-mono text-fog tracking-widest uppercase">BLOOD TYPE</div>
+                <div className="text-[10px] font-mono text-fog tracking-widest uppercase">BLOOD TYPE</div>
                 <div className="font-mono text-base font-bold text-white mt-1">{member.bloodType || "N/A"}</div>
               </div>
 
               <div className="p-3 bg-concrete-dark/90 border border-concrete-light">
-                <div className="text-[9px] font-mono text-fog tracking-widest uppercase">BIRTHDATE</div>
+                <div className="text-[10px] font-mono text-fog tracking-widest uppercase">BIRTHDATE</div>
                 <div className="font-mono text-xs font-bold text-white mt-1">{member.birthDate}</div>
               </div>
 
               <div className="p-3 bg-concrete-dark/90 border border-concrete-light">
-                <div className="text-[9px] font-mono text-fog tracking-widest uppercase">BIRTHPLACE</div>
+                <div className="text-[10px] font-mono text-fog tracking-widest uppercase">BIRTHPLACE</div>
                 <div className="font-mono text-xs font-bold text-white mt-1 truncate">{member.birthplace}</div>
               </div>
             </div>
@@ -175,8 +175,8 @@ export default async function MemberDetailPage({ params }: MemberPageProps) {
             {/* Performance Affinity Indices */}
             <div className="p-4 bg-void border border-concrete-light space-y-3">
               <div className="text-xs font-mono tracking-widest text-chrome uppercase flex items-center justify-between">
-                <span>TELEMETRY METRICS</span>
-                <span className="text-[10px] text-fog">VERIFIED BY THEBLACKLABEL</span>
+                <span>SKILL METRICS</span>
+                <span className="text-[10px] text-fog">THEBLACKLABEL</span>
               </div>
               <div className="grid grid-cols-2 gap-4 pt-1">
                 {member.stats.map((stat, idx) => (
@@ -191,7 +191,7 @@ export default async function MemberDetailPage({ params }: MemberPageProps) {
             {/* Biography Section */}
             <div className="space-y-3">
               <h3 className="font-mono text-xs tracking-[0.25em] text-ash uppercase border-b border-concrete-light pb-2">
-                DOSSIER NARRATIVE
+                BIOGRAPHY
               </h3>
               {member.bio.map((paragraph, idx) => (
                 <p key={idx} className="font-sans text-sm text-fog leading-relaxed">
@@ -203,7 +203,7 @@ export default async function MemberDetailPage({ params }: MemberPageProps) {
             {/* Trivia Section */}
             <div className="space-y-3">
               <h3 className="font-mono text-xs tracking-[0.25em] text-ash uppercase border-b border-concrete-light pb-2">
-                ARCHIVAL TRIVIA
+                FACTS & TRIVIA
               </h3>
               <ul className="space-y-2 text-xs font-mono text-chrome-dim">
                 {member.trivia.map((t, idx) => (

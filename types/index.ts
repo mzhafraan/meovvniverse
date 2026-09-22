@@ -42,6 +42,7 @@ export interface Track {
   releaseDate: string;
   duration: number; // in seconds
   audioUrl: string;
+  fallbackAudioUrl?: string;
   coverArt: string;
   youtubeId?: string;
   lyrics: LyricLine[];
